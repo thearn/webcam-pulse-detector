@@ -13,7 +13,7 @@ https://github.com/mossblaser/HeartMonitor).
 Data processing is implemented within an openMDAO (http://openmdao.org/) assembly object to facilitate rapid 
 prototyping/redesign of the real-time analysis, and for simple embedding into a python application.
 
-This application uses openCV to find the location of the user's face, then isolate the forehead region. Data is collected
+This application uses openCV (http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
 from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
 intensity in the forehead location, in the image frame's green channel alone. Physiological data can be estimated
 this way thanks to the optical absorbtion characteristics of oxygenated hemoglobin. 
