@@ -174,30 +174,3 @@ class findFaceGetPulse(Assembly):
         #up to assembly level, as the final output frame.
         self.connect("highlight_fhd.frame_out", "frame_out") 
         
-        
-        
-class getFPS(Component):
-    """
-    Grabs an image frame, computes FPS, then overlays it.
-    """
-    fps = Float(iotype="out")
-    def __init__(self, n = 100):
-        super(getFPS, self).__init__()
-        self.add("frame_in", Array(iotype="in"))
-        self.add("frame_out", Array(iotype="out"))
-        self.times = []
-        self.n = n
-        
-    def execute(self):
-        self.times.append(time.time())
-        N = len(self.times)
-        if N>2:
-            self.fps = float(N) / (self.times[-1] - self.times[0])
-        
-        if N > self.n:
-            self.times = self.times[-self.n:]
-            
-        cv2.putText(self.frame_in,"%0.0f %s" % (self.fps,"fps"),(100,100),
-                    cv2.FONT_HERSHEY_PLAIN,3,(255,0,0),3)
-        self.frame_out = self.frame_in
-        
