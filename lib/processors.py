@@ -30,7 +30,10 @@ class findFaceGetPulse(Assembly):
     from the output 'frame_out' array.
     
     """
-    def __init__(self):
+    def __init__(self, 
+                 bpm_limits = [50,160],
+                 data_spike_limit = 13.,
+                 face_detector_smoothness = 10):
         super(findFaceGetPulse, self).__init__()
         
         #-----------assembly-level I/O-----------
@@ -60,7 +63,7 @@ class findFaceGetPulse(Assembly):
         
         #finds faces within the grayscale's and contast-adjusted input image
         #Sets smoothness parameter to help prevent 'jitteriness' in the face tracking
-        self.add("find_faces", faceDetector(smooth = 10.))
+        self.add("find_faces", faceDetector(smooth = face_detector_smoothness))
         self.driver.workflow.add("find_faces")
         
         #collects subimage samples of the detected faces
@@ -83,17 +86,17 @@ class findFaceGetPulse(Assembly):
         
         #collects data over time to compute a 1d temporal FFT
         # 'n' sets the internal buffer length (number of samples)
-        # 'jump_limit' limits the size of acceptable spikes in the raw measured
+        # 'spike_limit' limits the size of acceptable spikes in the raw measured
         # data. When exceeeded due to poor data, the fft component's buffers 
         # are reset
         self.add("fft", BufferFFT(n=322,
-                                  jump_limit = 13.))
+                                  spike_limit = data_spike_limit))
         self.driver.workflow.add("fft")
         
         #takes in a computed FFT and estimates cardiac data
         # 'bpm_limits' sets the lower and upper limits (in bpm) for heartbeat
         # detection. 50 to 160 bpm is a pretty fair range here.
-        self.add("heart", Cardiac(bpm_limits = [50,160]))
+        self.add("heart", Cardiac(bpm_limits = bpm_limits))
         self.driver.workflow.add("heart")
         
         #toggles flashing of the detected foreheads in sync with the detected 
