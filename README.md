@@ -13,7 +13,7 @@ OpenCV is a powerful open-source computer vision library, with a convenient nump
 
 - OpenMDAO v0.5.5+ (http://openmdao.org/)
 
-OpenMDAO is an open-source engineering library that serves as a convenient and readable design enviroment for the required real-time analysis
+OpenMDAO is an open-source engineering framework that serves as a convenient object-oriented design enviroment for the required real-time analyses.
 It requires python 2.6+, numpy, scipy, and matplotlib (see http://openmdao.org/docs/getting-started/requirements.html)
 
 Quickstart:
