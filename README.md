@@ -10,8 +10,8 @@ Inspired by reviewing recent work on Eulerian Video Magnification (http://people
 with motivation to implement something comparable in python-opencv based on a few previous efforts (such as 
 https://github.com/mossblaser/HeartMonitor).
 
-Data processing is implemented within an openMDAO assembly to facilitate rapid prototyping/redesign of the real-time 
-analysis, and simple embedding into a python application.
+Data processing is implemented within an openMDAO (http://openmdao.org/) assembly object to facilitate rapid 
+prototyping/redesign of the real-time analysis, and for simple embedding into a python application.
 
 This application uses openCV to find the location of the user's face, then isolate the forehead region. Data is collected
 from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
