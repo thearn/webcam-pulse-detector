@@ -7,7 +7,7 @@ import cv2.cv as cv
 
 class cascadeDetection(Component):
     """
-    Detects objects using pre-trained haar cascade files.
+    Detects objects using pre-trained haar cascade files and cv2.
     
     Images should (at least ideally) be pre-grayscaled and contrast corrected,
     for best results.
@@ -15,11 +15,19 @@ class cascadeDetection(Component):
     Outputs probable locations of these faces in an array with format:
     
     [[x pos, y pos, width, height], [x pos, y pos, width, height], ...]
+    
+    Detection locations can be smoothed against motion by setting values to the 
+    input parameter 'smooth'.
     """
     
-    def __init__(self, fn, scaleFactor = 1.3, minNeighbors = 4, 
-                 minSize=(75, 75), flags = cv2.CASCADE_SCALE_IMAGE, 
-                 persist = True, smooth = 10.):
+    def __init__(self, fn, 
+                 scaleFactor = 1.3, 
+                 minNeighbors = 4, 
+                 minSize=(75, 75), 
+                 flags = cv2.CASCADE_SCALE_IMAGE, 
+                 persist = True, 
+                 smooth = 10.,
+                 return_one = True):
         super(cascadeDetection,self).__init__()  
         self.add("frame_in", Array(iotype="in"))
         self.add("detected", Array(iotype="out"))
@@ -27,6 +35,7 @@ class cascadeDetection(Component):
         self.persist = persist # keep last detected locations vs overwrite with none
         self.minNeighbors = minNeighbors
         self.minSize = minSize
+        self.return_one = return_one #return either one detection location or all 
         self.flags = flags
         self.smooth = smooth
         self.cascade = cv2.CascadeClassifier(fn)
@@ -71,23 +80,32 @@ class cascadeDetection(Component):
         if self.smooth:
             if self.shift(detected[0]) < self.smooth: #regularizes against jitteryness
                 return
-        
-        self.detected = detected
+        if self.return_one:
+            self.detected = detected[0:1]
+        else:
+            self.detected = detected
             
             
 
 
 class faceDetector(cascadeDetection):
     """
-    Detects forward-faces human faces in a frame.
+    Detects a human face in a frame.
+    
+    The forehead area is then isolated.
     """
 
-    def __init__(self, minSize=(50, 50)):
+    def __init__(self, minSize=(50, 50), 
+                 smooth = 10.,
+                 return_one = True):
         #fn = "cascades/haarcascade_frontalface_default.xml"
         fn="cascades/haarcascade_frontalface_alt.xml"
         #fn="cascades/haarcascade_frontalface_alt2.xml"
         #fn = "cascades/haarcascade_frontalface_alt_tree"
-        super(faceDetector, self).__init__(fn, minSize = minSize)
+        super(faceDetector, self).__init__(fn, 
+                                           minSize = minSize,
+                                           smooth = smooth,
+                                           return_one = return_one)
         self.add("foreheads", Array(iotype="out"))
         
 
@@ -113,12 +131,3 @@ class faceDetector(cascadeDetection):
     def execute(self):
         super(faceDetector, self).execute()
         self.get_foreheads()
-
-class eyesDetector(cascadeDetection):
-    """
-    Detects forward-faces human faces in a frame.
-    """
-
-    def __init__(self, minSize=(40, 40)):
-        fn = "cascades/haarcascade_eye.xml"
-        super(eyesDetector, self).__init__(fn, minSize = minSize)

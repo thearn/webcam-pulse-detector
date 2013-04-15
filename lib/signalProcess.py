@@ -71,7 +71,7 @@ class BufferFFT(Component):
     Can be reset to clear out internal buffers using the reset() method. 
     """
     ready = Bool(False, iotype="out")
-    def __init__(self, n = 322, quality_limit = 5.):
+    def __init__(self, n = 322, jump_limit = 5.):
         super(BufferFFT,self).__init__()
         self.n = n
         self.add("data_in", Float(iotype="in"))
@@ -83,7 +83,7 @@ class BufferFFT(Component):
         self.interpolated = np.zeros(2)
         self.even_times = np.zeros(2)
         
-        self.quality_limit = quality_limit
+        self.jump_limit = jump_limit
 
 
     def get_fft(self):
@@ -103,7 +103,7 @@ class BufferFFT(Component):
         for i in xrange(2,N):
             samples = self.samples[i:]
             delta =  max(samples)-min(samples)
-            if delta < self.quality_limit:
+            if delta < self.jump_limit:
                 return N-i
     
     def reset(self):
@@ -122,8 +122,8 @@ class BufferFFT(Component):
             self.times = self.times[-self.n:]
         if N>4:
             self.fft = self.get_fft()
-            if self.quality_limit:
-                if max(self.samples)-min(self.samples) > self.quality_limit:
+            if self.jump_limit:
+                if max(self.samples)-min(self.samples) > self.jump_limit:
                     self.reset()
 
 

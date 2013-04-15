@@ -59,7 +59,8 @@ class findFacesAndPulses(Assembly):
         self.driver.workflow.add("eq")       
         
         #finds faces within the grayscale's and contast-adjusted input image
-        self.add("find_faces", faceDetector())
+        #Sets smoothness parameter to help prevent 'jitteriness' in the face tracking
+        self.add("find_faces", faceDetector(smooth = 10.))
         self.driver.workflow.add("find_faces")
         
         #collects subimage samples of the detected faces
@@ -76,11 +77,17 @@ class findFacesAndPulses(Assembly):
         
         #highlights the locations of detected foreheads using 
         #contrast equalization (green channel only)
-        self.add("highlight_fhd", VariableEqualizerBlock(channels=[1], zerochannels=[0,2]))
+        self.add("highlight_fhd", VariableEqualizerBlock(channels=[1], 
+                                                         zerochannels=[0,2]))
         self.driver.workflow.add("highlight_fhd")
         
         #collects data over time to compute a 1d temporal FFT
-        self.add("fft", BufferFFT(quality_limit = 13.))
+        # 'n' sets the internal buffer length (number of samples)
+        # 'jump_limit' limits the size of acceptable spikes in the raw measured
+        # data. When exceeeded due to poor data, the fft component's buffers 
+        # are reset
+        self.add("fft", BufferFFT(n=322,
+                                  jump_limit = 13.))
         self.driver.workflow.add("fft")
         
         #takes in a computed FFT and estimates cardiac data
@@ -90,15 +97,18 @@ class findFacesAndPulses(Assembly):
         self.driver.workflow.add("heart")
         
         #toggles flashing of the detected foreheads in sync with the detected 
-        #heartbeat
-        self.add("bpm_flasher", PhaseController(default_a=1., default_b=0.,
+        #heartbeat. the 'default_a' and 'default_b' set the nominal contrast
+        #correction that will occur when phase pulsing isn't enabled.
+        #Pulsing is set by toggling the boolean variable 'state'.
+        self.add("bpm_flasher", PhaseController(default_a=1., 
+                                                default_b=0.,
                                                 state = True))
         self.driver.workflow.add("bpm_flasher")   
         
         
         #-----------connections-----------
         # here is where we establish the relationships between the components 
-        # that we have added to the assembly.
+        # that were added above.
         
         #--First, set up the connectivity for components that will do basic
         #--input, decomposition, and annotation of the inputted image frame
@@ -139,6 +149,9 @@ class findFacesAndPulses(Assembly):
         
         #send the mean of the first detected forehead subimage (green channel)
         #to the buffering FFT component
+        #Should probably be an intermediate component here, but that isn't 
+        #actually necessary - we can do a connection between expressions in
+        #addition to input/output variables.
         self.connect("grab_foreheads.slices[0].mean()", "fft.data_in")
         
         #Send the FFT outputs (the fft & associated freqs in hz) to the cardiac
