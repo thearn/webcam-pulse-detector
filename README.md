@@ -1,7 +1,7 @@
 webcam-pulse-detector
 =====================
 
-An app that detects the heart-rate of an individual using their webcam.
+A python application that detects the heart-rate of an individual using their webcam.
 
 Requirements:
 ---------------
