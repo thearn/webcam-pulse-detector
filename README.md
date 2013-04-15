@@ -6,6 +6,12 @@ webcam-pulse-detector
 A python application that detects the heart-rate of an individual using their 
 computer's webcam.
 
+Inspired by reviewing recent work on Eulerian Video Magnification (http://people.csail.mit.edu/mrub/vidmag/), 
+with motivation to implement in python-opencv based on previous efforts such as https://github.com/mossblaser/HeartMonitor.
+
+Processing is implemented within an openMDAO assembly to facilitate rapid redesigns of the real-time analysis, and simple 
+embedding into a python application.
+
 Requirements:
 ---------------
 
@@ -50,3 +56,9 @@ stream.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
 started over
+
+TODO:
+------
+- Support for multiple individuals
+- Smooth tracking of faces/foreheads, perhaps by buffering and registering/transforming whole image frames
+
