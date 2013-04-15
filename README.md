@@ -55,7 +55,7 @@ maxima indicating the heartrate (in beats per minute).
 isolated in about 15 seconds. When the conditions are good, other physiological waveforms, such as Mayer waves 
 (http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream (top).
 - Once the pulse signal has been isolated, it is amplified and fed back into the frame rendering to allow the  
-the highlighted forhead location to pulse in sync with the user's own heartbeat
+the highlighted forhead location to pulse in sync with the user's own heartbeat, in real time.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
 started over
