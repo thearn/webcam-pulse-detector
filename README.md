@@ -30,7 +30,7 @@ frequency to be exaggerated in the post-process frame rendering; causing the
 highlighted forhead location to pulse in sync with the user's own heartbeat (in real time).
 
 Support for pulse-detection on multiple simultaneous people in an camera's 
-image stream is possible, but at the moment only the information from one face 
+image stream is definitely possible, but at the moment only the information from one face 
 is extracted for cardiac analysis
 
 Requirements:
