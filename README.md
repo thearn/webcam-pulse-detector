@@ -66,8 +66,9 @@ Usage notes:
 - When run, a window will open showing a stream from your computer's webcam
 - When a forehead location has been isolated, the user should press "S" on their 
 keyboard to lock this location, and remain as still as possible (the camera 
-stream window must have focus for the click to register). This freezes the aquisition location in place.
-- To view a stream of the measured data as it is gathered, press "D".
+stream window must have focus for the click to register). This freezes the aquisition location in place. This lock can
+be released by pressing "S" again.
+- To view a stream of the measured data as it is gathered, press "D". To hide this display, press "D" again.
 - The data display shows three data traces, from top to bottom: 1) raw optical 
 intensity, 2) extracted heartbeat signal, 3) Power spectral density, with local 
 maxima indicating the heartrate (in beats per minute). 
