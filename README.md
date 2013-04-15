@@ -47,7 +47,10 @@ is extracted for cardiac analysis
 keyboard to lock this location, and remain as still as possible (the camera 
 stream window must have focus for the click to register). This freezes the aquisition location in place.
 - The application will then track the variations in this location over time to 
-measure a heartbeat. To view a stream of this data, press "D".
+measure a heartbeat. This is done by measuring average optical intensity in the
+forehead location, in the image frame's channel alone. Physiological data can be estimated
+do to the optical absorbtion characteristics of oxygenated hemoglobin. To view a stream of this data as 
+it is gathered, press "D".
 - The data display shows three data traces, from top to bottom: 1) raw optical 
 intensity, 2) extracted heartbeat signal, 3) Power spectral density, with local 
 maxima indicating the heartrate (in beats per minute). 
