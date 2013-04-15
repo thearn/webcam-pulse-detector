@@ -1,3 +1,5 @@
+![Alt text](screenshot.png "Screenshot")
+
 webcam-pulse-detector
 =====================
 
