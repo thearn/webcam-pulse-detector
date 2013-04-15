@@ -13,6 +13,20 @@ https://github.com/mossblaser/HeartMonitor).
 Data processing is implemented within an openMDAO assembly to facilitate rapid prototyping/redesign of the real-time 
 analysis, and simple embedding into a python application.
 
+This application uses openCV to find the location of the user's face, then isolate the forehead region. Data is collected
+from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
+intensity in the forehead location, in the image frame's green channel alone. Physiological data can be estimated
+this way thanks to the optical absorbtion characteristics of oxygenated hemoglobin. 
+
+With good lighting and minimal noise due to motion, a stable heartbeat should be 
+isolated in about 15 seconds. Other physiological waveforms, such as Mayer waves 
+(http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream.
+
+Once the user's pulse signal has been isolated, temporal phase variation associated with the 
+detected hearbeat frequency is also computed. This allows for the heartbeat 
+frequency to be exaggerated in the post-process frame rendering; causing the 
+highlighted forhead location to pulse in sync with the user's own heartbeat (in real time).
+
 Requirements:
 ---------------
 
@@ -55,20 +69,13 @@ is extracted for cardiac analysis
 keyboard to lock this location, and remain as still as possible (the camera 
 stream window must have focus for the click to register). This freezes the aquisition location in place.
 - The application will then track the variations in this location over time to 
-measure a heartbeat. This is done by measuring average optical intensity in the
-forehead location, in the image frame's channel alone. Physiological data can be estimated
-do to the optical absorbtion characteristics of oxygenated hemoglobin. To view a stream of this data as 
+measure a heartbeat. To view a stream of this data as 
 it is gathered, press "D".
 - The data display shows three data traces, from top to bottom: 1) raw optical 
 intensity, 2) extracted heartbeat signal, 3) Power spectral density, with local 
 maxima indicating the heartrate (in beats per minute). 
 - With good lighting and minimal noise due to motion, a stable heartbeat should be 
-isolated in about 15 seconds. When the conditions are good, other physiological waveforms, such as Mayer waves 
-(http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream (top).
-- Once the pulse signal has been isolated, temporal phase variation associated with the 
-detected hearbeat frequency is also computed. This allows for the heartbeat 
-frequency to be exaggerated in the post-processes frame rendering; causing the 
-highlighted forhead location to pulse in sync with the user's own heartbeat, in real time.
+isolated in about 15 seconds.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
 started over
