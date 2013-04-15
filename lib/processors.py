@@ -3,19 +3,32 @@ from openmdao.main.api import Component, Assembly
 
 from imageProcess import RGBSplit, RGBmuxer, equalizeContrast, Grayscale
 from detectors import faceDetector
-from sliceops import frameSlices, equalizeBlock, drawRectangles
+from sliceops import frameSlices, VariableEqualizerBlock, drawRectangles
 from signalProcess import BufferFFT, Cardiac, PhaseController
 from numpy import mean
 import time, cv2
 
+
 class findFacesAndPulses(Assembly):
     """
-    Detects human faces, then isolates foreheads
+    An openMDAO assembly to detects human faces in image frames, and then 
+    isolate foreheads. Written to be embedded in other python applications.
     
-    Collects the mean value of the green channel in the forehead locations 
+    Collects and buffers mean value of the green channel in the forehead locations 
     over time
     
-    Uses this information to estimate the detected individual's heartbeat
+    This information is then used to estimate the detected individual's heartbeat
+    
+    Basic usage: 
+    
+    -Instance this assembly, then create a loop over frames collected
+    from an imaging device. 
+    -For each iteration of the loop, populate the assembly's 
+    'frame_in' input array with the collected frame, then call the assembly's run()
+    method to conduct all of the analysis. 
+    -Finally, display annotated results
+    from the output 'frame_out' array.
+    
     """
     def __init__(self):
         super(findFacesAndPulses, self).__init__()
@@ -30,6 +43,8 @@ class findFacesAndPulses(Assembly):
         self.add("faces", Array(iotype="out"))
         
         #-----------components-----------
+        # Each component we want to use must be added to the assembly, then also
+        # added to the driver's workflow 
         
         #splits input color image into R,G,B channels
         self.add("splitter", RGBSplit())
@@ -56,12 +71,12 @@ class findFacesAndPulses(Assembly):
         self.driver.workflow.add("grab_foreheads")     
         
         #highlights the locations of detected faces using contrast equalization
-        self.add("highlight_faces", equalizeBlock(channels=[0,1,2]))
+        self.add("highlight_faces", VariableEqualizerBlock(channels=[0,1,2]))
         self.driver.workflow.add("highlight_faces")
         
         #highlights the locations of detected foreheads using 
         #contrast equalization (green channel only)
-        self.add("highlight_fhd", equalizeBlock(channels=[1], zerochannels=[0,2]))
+        self.add("highlight_fhd", VariableEqualizerBlock(channels=[1], zerochannels=[0,2]))
         self.driver.workflow.add("highlight_fhd")
         
         #collects data over time to compute a 1d temporal FFT
@@ -69,6 +84,8 @@ class findFacesAndPulses(Assembly):
         self.driver.workflow.add("fft")
         
         #takes in a computed FFT and estimates cardiac data
+        # 'bpm_limits' sets the lower and upper limits (in bpm) for heartbeat
+        # detection. 50 to 160 bpm is a pretty fair range here.
         self.add("heart", Cardiac(bpm_limits = [50,160]))
         self.driver.workflow.add("heart")
         
@@ -80,32 +97,40 @@ class findFacesAndPulses(Assembly):
         
         
         #-----------connections-----------
+        # here is where we establish the relationships between the components 
+        # that we have added to the assembly.
         
-        #pass image frames to RGB splitter & grayscale converters
+        #--First, set up the connectivity for components that will do basic
+        #--input, decomposition, and annotation of the inputted image frame
+        
+        # pass image frames from the assembly-level input arrays to the RGB 
+        # splitter & grayscale converters (separately)
         self.connect("frame_in", "splitter.frame_in")
         self.connect("frame_in", "gray.frame_in")
         
-        #pass grayscaled image to contrast equalizer
+        #pass grayscaled image to the contrast equalizer
         self.connect("gray.frame_out", "eq.frame_in")
         
-        #contrast adjusted grayscale image to face detector
+        #pass the contrast adjusted grayscale image to the face detector
         self.connect("eq.frame_out", "find_faces.frame_in")
         
-        #pass original image frame and detected faces locations 
-        #to the face highlighter
+        # now pass our original image frame and the detected faces locations 
+        # to the face highlighter
         self.connect("frame_in", "highlight_faces.frame_in")
         self.connect("find_faces.detected", "highlight_faces.rects_in")
         
-        #pass original image frame and detected face locations
-        #to the forehead highlighter
+        # pass the original image frame and detected face locations
+        # to the forehead highlighter
         self.connect("highlight_faces.frame_out", "highlight_fhd.frame_in")
         self.connect("find_faces.foreheads", "highlight_fhd.rects_in")
         
-        #pass original image frame and detected face locations
-        #to the face subimage collector
+        # pass the original image frame and detected face locations
+        # to the face subimage collector
         self.connect("find_faces.detected", "grab_faces.rects_in")
         self.connect("eq.frame_out", "grab_faces.frame_in")
         
+        # --Now we set the connectivity for the components that will do the 
+        # --actual analysis
         
         #pass the green channel of the original image frame and detected 
         #face locations to the forehead subimage collector

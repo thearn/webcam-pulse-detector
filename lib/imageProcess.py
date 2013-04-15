@@ -2,59 +2,17 @@ from openmdao.lib.datatypes.api import Float, Dict, Array, List, Int
 from openmdao.main.api import Component, Assembly
 import numpy as np
 import cv2
-import cv2.cv as cv
-from scipy import ndimage
-from scipy import signal
 
-class motionDiff(Component):
-    diff_level = Float(iotype="out")
-
-    def __init__(self):
-        super(motionDiff,self).__init__()
-        self.add("frame_in", Array(iotype="in"))
-
-        self.add("diff", Array(iotype="out"))
-        self.t0 = None
-        self.t1 = None
-        self.phase = None
-
-    def diffImg(self,t0, t1, t2):
-        d1 = cv2.absdiff(t2, t1)
-        d2 = cv2.absdiff(t1, t0)
-        """
-        self.phase = np.array(cv2.phaseCorrelate(np.float32(self.t0[:,:,0]),
-                                                 np.float32(self.t1[:,:,0])))
-        self.phase = np.linalg.norm(self.phase)
-        """
-        t0 = np.float32(self.t0[:,:,0])
-        t1 = np.float32(self.t1[:,:,0])
-        self.phase = signal.fftconvolve(t0,t1)
-        return cv2.bitwise_and(d1, d2)
-
-    def execute(self):
-        if not isinstance(self.t0, np.ndarray):
-            self.t0 = self.frame_in
-            self.diff = np.zeros(self.frame_in.shape)
-            return
-        if not isinstance(self.t1, np.ndarray):
-            self.t1 = self.frame_in
-            self.diff = np.zeros(self.frame_in.shape)
-            return
-        
-        self.diff = self.diffImg(self.t0,self.t1,self.frame_in)
-        self.t0 = self.t1
-        self.t1 = self.frame_in
-        self.diff_level = np.linalg.norm(self.diff)
-
-
-
+"""
+Whole-frame image processing components & helper methods
+"""
 
 class RGBSplit(Component):
     """
     Extract the red, green, and blue channels from an (n,m,3) shaped 
     array representing a single image frame with RGB color coding.
 
-    Essentially a pretty straighforward numpy slicing operation.
+    At its core, a pretty straighforward numpy slicing operation.
     """
 
     def __init__(self):
@@ -73,7 +31,7 @@ class RGBSplit(Component):
 class RGBmuxer(Component):
     """
     Take three (m,n) matrices of equal size and combine them into a single
-    color r,g,b frame.
+    RGB-coded color frame.
     """
 
     def __init__(self):
@@ -92,9 +50,9 @@ class RGBmuxer(Component):
 class CVwrapped(Component):
     """
     Generic wrapper to take the simpler functions from the cv2 or scipy image
-    libraries to generate connectable openMDAO components.
+    libraries to generate connectable openMDAO components for image processing.
 
-    The "simple" functions in mind are the ones of the form:
+    The "simple" functions in mind here are the ones of the form:
 
     "matrix in" --> [single method call]--> "matrix out"    
 
@@ -129,19 +87,3 @@ class equalizeContrast(CVwrapped):
     def __init__(self):
         super(equalizeContrast,self).__init__(cv2.equalizeHist)
         
-
-
-if __name__ == "__main__":
-    from device import Camera
-    cam = Camera()
-    proc = motionDiff()
-    while True:
-        frame = cam.get_frame()
-        proc.frame_in = frame
-        proc.run()
-        
-        diff = proc.diff
-        
-        print proc.phase
-        
-        cv2.imshow("test",diff)

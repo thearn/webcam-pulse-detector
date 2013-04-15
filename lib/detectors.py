@@ -3,7 +3,6 @@ from openmdao.main.api import Component, Assembly
 import numpy as np
 import cv2
 import cv2.cv as cv
-from scipy import ndimage
 
 
 class cascadeDetection(Component):

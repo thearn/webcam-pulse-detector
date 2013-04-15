@@ -2,14 +2,22 @@ from openmdao.lib.datatypes.api import Float, Dict, Array, List, Int
 from openmdao.main.api import Component, Assembly
 import numpy as np
 import cv2
-import cv2.cv as cv
-from scipy import ndimage
-        
+
+"""
+Image frame analysis components written to operate only on inputted regions
+(slices of numpy arrays) which are inputted. 
+
+Typically these recieve, as input, the output of some object detection components
+"""
+
 class processRect(Component):
     """
     Process inputted rectangles, using specification 
     [ [x pos, y pos, width, height], ... ]
     into an inputted frame.
+    
+    (Used as a prototype for most of the region-specific image analysis 
+    components)
     """
     
     def __init__(self, channels = [0,1,2], zerochannels = []):
@@ -39,7 +47,7 @@ class processRect(Component):
 
 class drawRectangles(processRect):
     """
-    Draws rectangles outlines
+    Draws rectangles outlines in a specific region within the inputted frame
     """
         
     def process(self, rect, frame):
@@ -47,9 +55,12 @@ class drawRectangles(processRect):
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0,255,0), 3)
         return frame
 
-class equalizeBlock(processRect):
+class VariableEqualizerBlock(processRect):
     """
-    Draws rectangles outlines
+    Equalizes the contrast in a specific region within the inputted frame
+    
+    Balance between fully equalized contrast and the un-altered frame can be
+    varied by setting the 'alpha' and 'beta' inputs.
     """
     beta = Float(0., iotype="in")
     alpha = Float(1., iotype="in")
@@ -63,7 +74,10 @@ class equalizeBlock(processRect):
 
 class frameSlices(Component):
     """
-    Collect slices of inputted frame using rectangle specifications
+    Collect slices of inputted frame using rectangle specifications. 
+    
+    This component is typically used to grab regions of interest of an image for
+    GUI display.
     """
     def __init__(self, channels = [0,1,2]):
         super(frameSlices,self).__init__()    
