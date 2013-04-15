@@ -51,7 +51,7 @@ Quickstart:
 ```
 . OpenMDAO/bin/activate
 ```
-- Navigate to the downloaded source directory, and run get_pulse.py to start the application
+- In the activated environment, navigate to the downloaded source directory, and run get_pulse.py to start the application
 
 ```
 python get_pulse.py
