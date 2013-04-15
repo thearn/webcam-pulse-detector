@@ -50,16 +50,17 @@ stream window must have focus). This freezes the aquisition location in place.
 measure a heartbeat. To view a stream of this data, press "D".
 - The data display shows three data traces, from top to bottom: 1) raw optical 
 intensity, 2) extracted heartbeat signal, 3) Power spectral density, with local 
-maxima indicated the heartrate (in beats per minute). 
-- With good lighting and minimal motion noise, a stable heartbeat should be 
-isolated in about 10 seconds. Meyer waves should also be visible in the raw data
-stream.
+maxima indicating the heartrate (in beats per minute). 
+- With good lighting and minimal noise due to motion, a stable heartbeat should be 
+isolated in about 15 seconds. When the conditions are good, other physiological waveforms, such as Mayer waves 
+(http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream (top).
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
 started over
 
 TODO:
 ------
+- Show the detected bpm somewhere in the camera stream
 - Support for multiple individuals
-- Smooth tracking of faces/foreheads, perhaps by buffering and registering/transforming whole image frames
+- Smoother tracking of data from foreheads, perhaps by buffering and registering/inverse-transforming image subframes
 
