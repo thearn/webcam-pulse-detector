@@ -11,11 +11,11 @@ import time, cv2
 
 class findFaceGetPulse(Assembly):
     """
-    An openMDAO assembly to detects human faces in image frames, and then 
-    isolate foreheads. Written to be embedded in other python applications.
+    An openMDAO assembly to detect a human face in an image frame, and then 
+    isolate the forehead.
     
     Collects and buffers mean value of the green channel in the forehead locations 
-    over time
+    over time, with each run.
     
     This information is then used to estimate the detected individual's heartbeat
     
