@@ -1,45 +1,56 @@
 from lib.device import Camera
-from lib.processors import findFacesAndPulses
+from lib.processors import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey,destroyWindow, moveWindow
 import numpy as np      
 
 class getPulseApp(object):
     """
-    Finds faces in webcam stream & isolates foreheads.
+    Python application that finds a face in a webcam stream, then isolates the
+    forehead.
     
-    Then mean green-light intensity data is gathered from a detected forhead 
-    over time and the detected person's pulse is estimated.
+    Then the average green-light intensity in the forehead region is gathered 
+    over time, and the detected person's pulse is estimated.
     """
     def __init__(self):
-        #Imaging device
-        self.camera = Camera(camera=0)
+        #Imaging device - must be a connected camera (not an ip camera or mjpeg
+        #stream)
+        self.camera = Camera(camera=0) #first camera by default
         self.w,self.h = 0,0
+        
         #Containerized analysis of recieved image frames (an openMDAO assembly)
+        #is defined next.
+        
         #This assembly is designed to handle all image & signal analysis,
         #such as face detection, forehead isolation, time series collection,
-        #heart-beat detection, etc.
-        self.processor = findFacesAndPulses()
+        #heart-beat detection, etc. 
+        
+        #Basically, everything that isn't communication
+        #to the camera device or part of the GUI
+        self.processor = findFaceGetPulse()
         
         #Init parameters for the cardiac data plot
         self.bpm_plot = False
         self.plot_title = "Cardiac info - raw signal, filtered signal, and PSD"
         
-        #Maps keyboard controls to internal methods
+        #Maps keystrokes to specified methods
+        #(A GUI window must have focus for these to work)
         self.key_controls = {"s" : self.toggle_search,
                         "d" : self.toggle_display_plot}
         
     
     def toggle_search(self):
         """
-        Toggles a lock on the processor's face detection component.
-        Locking the forehead location in place improves data quality. 
+        Toggles a motion lock on the processor's face detection component.
+        
+        Locking the forehead location in place significantly improves
+        data quality, once a forehead has been sucessfully isolated. 
         """
         state = self.processor.find_faces.toggle()
         print "face detection lock =",not state
     
     def toggle_display_plot(self):
         """
-        Toggles the data display 
+        Toggles the data display.
         """
         if self.bpm_plot:
             print "bpm plot disabled"
@@ -53,11 +64,14 @@ class getPulseApp(object):
     
     def make_bpm_plot(self):
         """
-        Creates / updates the data display
+        Creates and/or updates the data display
         """
-        plotXY([[self.processor.fft.times, self.processor.fft.samples],
-            [self.processor.fft.even_times[4:-4], self.processor.heart.filtered[4:-4]],
-                [self.processor.heart.freqs, self.processor.heart.fft]], 
+        plotXY([[self.processor.fft.times, 
+                 self.processor.fft.samples],
+            [self.processor.fft.even_times[4:-4], 
+             self.processor.heart.filtered[4:-4]],
+                [self.processor.heart.freqs, 
+                 self.processor.heart.fft]], 
                labels = [False, False, True],
                showmax = [False,False, "bpm"], 
                name = self.plot_title, 
@@ -65,7 +79,8 @@ class getPulseApp(object):
     
     def key_handler(self):    
         """
-        Handle keypresses.
+        Handle keystrokes, as set at the bottom of __init__()
+        
         A plotting or camera frame window must have focus for keypresses to be
         detected.
         """
@@ -83,12 +98,13 @@ class getPulseApp(object):
         # Get current image frame from the camera
         frame = self.camera.get_frame()
         self.h,self.w,_c = frame.shape
+        
         #display unaltered frame
         #imshow("Original",frame)
         
         #set current image frame to the processor's input
         self.processor.frame_in = frame
-        #process the image frame
+        #process the image frame to perform all needed analysis
         self.processor.run()
         #collect the output frame for display
         output_frame = self.processor.frame_out
@@ -96,7 +112,7 @@ class getPulseApp(object):
         #show the processed/annotated output frame
         imshow("Processed",output_frame)
         
-        #create and/or update the raw data display
+        #create and/or update the raw data display if needed
         if self.bpm_plot:
             self.make_bpm_plot()
         

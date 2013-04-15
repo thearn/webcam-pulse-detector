@@ -68,7 +68,13 @@ class BufferFFT(Component):
     Computes an FFT of this buffered data, along with timestamps and 
     correspondonding frequencies (hz), as output arrays.
     
-    Can be reset to clear out internal buffers using the reset() method. 
+    When the internal buffer is full to size 'n', the boolean 'ready' is 
+    toggled to True. This indicates that this component is providing output 
+    data corresponding to an n-point FFT. The 'ready' state can be outputed as
+    a digital control to another component taking a boolean input.
+    
+    Can be reset to clear out internal buffers using the reset() method. This
+    toggles the 'ready' state to False.
     """
     ready = Bool(False, iotype="out")
     def __init__(self, n = 322, jump_limit = 5.):

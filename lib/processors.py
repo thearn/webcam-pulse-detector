@@ -9,7 +9,7 @@ from numpy import mean
 import time, cv2
 
 
-class findFacesAndPulses(Assembly):
+class findFaceGetPulse(Assembly):
     """
     An openMDAO assembly to detects human faces in image frames, and then 
     isolate foreheads. Written to be embedded in other python applications.
@@ -31,7 +31,7 @@ class findFacesAndPulses(Assembly):
     
     """
     def __init__(self):
-        super(findFacesAndPulses, self).__init__()
+        super(findFaceGetPulse, self).__init__()
         
         #-----------assembly-level I/O-----------
         
