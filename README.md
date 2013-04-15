@@ -27,6 +27,10 @@ detected hearbeat frequency is also computed. This allows for the heartbeat
 frequency to be exaggerated in the post-process frame rendering; causing the 
 highlighted forhead location to pulse in sync with the user's own heartbeat (in real time).
 
+Support for pulse-detection on multiple simultaneous people in an camera's 
+image stream is possible, but at the moment only the information from one face 
+is extracted for cardiac analysis
+
 Requirements:
 ---------------
 
@@ -60,17 +64,10 @@ python get_pulse.py
 Usage notes:
 ----------
 - When run, a window will open showing a stream from your computer's webcam
-- The application will search for a human face within the camera frames, and 
-attempt to isolate an area on the forehead
-- Support for pulse-detection on multiple simultaneous people in an camera's 
-image stream is possible, but at the moment only the information from one face 
-is extracted for cardiac analysis
 - When a forehead location has been isolated, the user should press "S" on their 
 keyboard to lock this location, and remain as still as possible (the camera 
 stream window must have focus for the click to register). This freezes the aquisition location in place.
-- The application will then track the variations in this location over time to 
-measure a heartbeat. To view a stream of this data as 
-it is gathered, press "D".
+- To view a stream of the measured data as it is gathered, press "D".
 - The data display shows three data traces, from top to bottom: 1) raw optical 
 intensity, 2) extracted heartbeat signal, 3) Power spectral density, with local 
 maxima indicating the heartrate (in beats per minute). 
