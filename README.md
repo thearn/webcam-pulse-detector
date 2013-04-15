@@ -45,7 +45,7 @@ image stream is possible, but at the moment only the information from one face
 is extracted for cardiac analysis
 - When a forehead location has been isolated, the user should press "S" on their 
 keyboard to lock this location, and remain as still as possible (the camera 
-stream window must have focus). This freezes the aquisition location in place.
+stream window must have focus for the click to register). This freezes the aquisition location in place.
 - The application will then track the variations in this location over time to 
 measure a heartbeat. To view a stream of this data, press "D".
 - The data display shows three data traces, from top to bottom: 1) raw optical 
@@ -54,6 +54,8 @@ maxima indicating the heartrate (in beats per minute).
 - With good lighting and minimal noise due to motion, a stable heartbeat should be 
 isolated in about 15 seconds. When the conditions are good, other physiological waveforms, such as Mayer waves 
 (http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream (top).
+- Once the pulse signal has been isolated, it is amplified and fed back into the frame rendering to allow the  
+the highlighted forhead location to pulse in sync with the user's own heartbeat, in real time.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
 started over
