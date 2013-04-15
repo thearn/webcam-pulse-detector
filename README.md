@@ -17,7 +17,7 @@ Quickstart:
 
 How to use:
 ----------
-- A window will open showing a stream from your computer's webcam
+- When run, a window will open showing a stream from your computer's webcam
 - The application will search for a human face within the camera frames, and attempt to isolate an area on the forehead
 - When a forehead location has been isolated, the user should press "S" on their keyboard to lock the location, and remain as still as possible
 - The application will then track the variations in this location over time to measure a heartbeat. To view a stream of this data, press "D".
