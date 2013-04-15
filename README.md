@@ -72,9 +72,9 @@ stream window must have focus for the click to register). This freezes the aquis
 be released by pressing "S" again.
 - To view a stream of the measured data as it is gathered, press "D". To hide this display, press "D" again.
 - The data display shows three data traces, from top to bottom: 
-   1) raw optical intensity
-   2) extracted heartbeat signal
-   3) Power spectral density, with local maxima indicating the heartrate (in beats per minute). 
+   1. raw optical intensity
+   2. extracted heartbeat signal
+   3. Power spectral density, with local maxima indicating the heartrate (in beats per minute). 
 - With good lighting and minimal noise due to motion, a stable heartbeat should be 
 isolated in about 15 seconds.
 - If a large spike in optical intensity is measured in the data (due to motion 
