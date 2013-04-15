@@ -7,11 +7,11 @@ A python application that detects the heart-rate of an individual using their
 computer's webcam.
 
 Inspired by reviewing recent work on Eulerian Video Magnification (http://people.csail.mit.edu/mrub/vidmag/), 
-with motivation to implement in python-opencv based on some previous efforts (such as 
+with motivation to implement something comparable in python-opencv based on a few previous efforts (such as 
 https://github.com/mossblaser/HeartMonitor).
 
-Processing is implemented within an openMDAO assembly to facilitate rapid redesigns of the real-time analysis, and simple 
-embedding into a python application.
+Data processing is implemented within an openMDAO assembly to facilitate rapid prototyping/redesign of the real-time 
+analysis, and simple embedding into a python application.
 
 Requirements:
 ---------------
