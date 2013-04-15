@@ -45,7 +45,7 @@ image stream is possible, but at the moment only the information from one face
 is extracted for cardiac analysis
 - When a forehead location has been isolated, the user should press "S" on their 
 keyboard to lock this location, and remain as still as possible (the camera 
-stream window must have focus). This freezes the aquisition location in place.
+stream window must have focus for the click to register). This freezes the aquisition location in place.
 - The application will then track the variations in this location over time to 
 measure a heartbeat. To view a stream of this data, press "D".
 - The data display shows three data traces, from top to bottom: 1) raw optical 
