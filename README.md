@@ -75,7 +75,7 @@ be released by pressing "S" again.
    1. raw optical intensity
    2. extracted heartbeat signal
    3. Power spectral density, with local maxima indicating the heartrate (in beats per minute). 
-- With good lighting and minimal noise due to motion, a stable heartbeat should be 
+- With consistent lighting and minimal head motion, a stable heartbeat should be 
 isolated in about 15 seconds.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
