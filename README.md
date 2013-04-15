@@ -33,7 +33,12 @@ It requires python 2.6+, numpy, scipy, and matplotlib
 Quickstart:
 ------------
 - Activate the openMDAO virtual python environment in a command or terminal window
+
+'. OpenMDAO/bin/activate'
+
 - Navigate to the downloaded source directory, and run get_pulse.py to start the application
+
+'python get_pulse.py'
 
 Usage notes:
 ----------
