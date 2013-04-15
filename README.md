@@ -1,7 +1,8 @@
 webcam-pulse-detector
 =====================
 
-A python application that detects the heart-rate of an individual using their computer's webcam.
+A python application that detects the heart-rate of an individual using their 
+computer's webcam.
 
 Requirements:
 ---------------
@@ -15,15 +16,15 @@ numpy-like interface in the cv2 bindings.
 - OpenMDAO v0.5.5+ (http://openmdao.org/)
 
 OpenMDAO is an open-source engineering framework that serves as a convenient 
-object-oriented design enviroment for the required real-time analyses.
+object-oriented enviroment to containerize and easily make tweaks to the required 
+real-time analyses.
 It requires python 2.6+, numpy, scipy, and matplotlib 
 (see http://openmdao.org/docs/getting-started/requirements.html)
 
 Quickstart:
 ------------
-- In a windows command window or Unix/OSX terminal, activate the openMDAO virtual 
-python environment
-- Run get_pulse.py
+- Activate the openMDAO virtual python environment in a command or terminal window
+- Navigate to the downloaded source directory, and run get_pulse.py to start the application
 
 Usage notes:
 ----------
@@ -34,8 +35,8 @@ attempt to isolate an area on the forehead
 image stream is possible, but at the moment only the information from one face 
 is extracted for cardiac analysis
 - When a forehead location has been isolated, the user should press "S" on their 
-keyboard to lock this location, and remain as still as possible. This freezes 
-the detection processes in place.
+keyboard to lock this location, and remain as still as possible (the camera 
+stream window must have focus). This freezes the aquisition location in place.
 - The application will then track the variations in this location over time to 
 measure a heartbeat. To view a stream of this data, press "D".
 - The data display shows three data traces, from top to bottom: 1) raw optical 
