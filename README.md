@@ -8,7 +8,9 @@ Requirements:
 
 - Python v2.7+ (http://python.org/)
 - OpenCV v2.4+, with the cv2 python bindings (http://opencv.org/)
+OpenCV is a powerful open-source computer vision library, with a convenient numpy-like interface in the cv2 bindings.
 - OpenMDAO v0.5.5+ (http://openmdao.org/)
+OpenMDAO is an open-source engineering library that serves as a convenient and readable design enviroment for the required real-time analysis.
 
 Quickstart:
 ------------
