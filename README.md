@@ -20,7 +20,7 @@ Requirements:
 - OpenCV v2.4+, with the cv2 python bindings (http://opencv.org/)
  
 OpenCV is a powerful open-source computer vision library, with a convenient 
-numpy-like interface in the cv2 bindings.
+numpy-compatible interface in the cv2 bindings.
 
 - OpenMDAO v0.5.5+ (http://openmdao.org/)
 
