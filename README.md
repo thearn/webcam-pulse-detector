@@ -6,9 +6,9 @@ An app that detects the heart-rate of an individual using their webcam.
 Requirements:
 ---------------
 
--Python v2.7+ (http://python.org/)
--OpenCV v2.4+, with the cv2 python bindings (http://opencv.org/)
--OpenMDAO v0.5.5+ (http://openmdao.org/)
+- Python v2.7+ (http://python.org/)
+- OpenCV v2.4+, with the cv2 python bindings (http://opencv.org/)
+- OpenMDAO v0.5.5+ (http://openmdao.org/)
 
 Quickstart:
 ------------
