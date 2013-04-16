@@ -30,7 +30,7 @@ class cascadeDetection(Component):
                  return_one = True):
         super(cascadeDetection,self).__init__()  
         self.add("frame_in", Array(iotype="in"))
-        self.add("detected", Array([[0,0,0,0]],iotype="out"))
+        self.add("detected", Array([[0,0,2,2]],iotype="out"))
         self.scaleFactor = scaleFactor
         self.persist = persist # keep last detected locations vs overwrite with none
         self.minNeighbors = minNeighbors
@@ -106,7 +106,7 @@ class faceDetector(cascadeDetection):
                                            minSize = minSize,
                                            smooth = smooth,
                                            return_one = return_one)
-        self.add("foreheads", Array(iotype="out"))
+        self.add("foreheads", Array([[0,0,2,2]],iotype="out"))
         
 
     def get_foreheads(self):
@@ -130,4 +130,5 @@ class faceDetector(cascadeDetection):
         
     def execute(self):
         super(faceDetector, self).execute()
-        self.get_foreheads()
+        if self.detected[0][2] != 2:
+            self.get_foreheads()
