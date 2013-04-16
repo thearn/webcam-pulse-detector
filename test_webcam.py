@@ -8,9 +8,9 @@ while True:
     ret, img = cam.read()
     
     #create some test points
-    pts1 = numpy.array([[0,0],[100,100]])
-    pts2 = numpy.array([[0,0],[0,500],[200,200]])
-    pts3 = numpy.array([[10,3],[10,300],[100,250]])
+    pts1 = numpy.array([[0,0],[100,100]], numpy.int32)
+    pts2 = numpy.array([[0,0],[0,500],[200,200]], numpy.int32)
+    pts3 = numpy.array([[10,3],[10,300],[100,250]], numpy.int32)
     
     #test out line function
     for i in xrange(len(pts3)-1):

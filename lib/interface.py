@@ -12,7 +12,7 @@ effective for our purposes.
 """
 
 def moveWindow(*args,**kwargs):
-    return cv2.moveWindow(*args,**kwargs)
+    return
 
 def imshow(*args,**kwargs):
     return cv2.imshow(*args,**kwargs)
@@ -103,7 +103,7 @@ def plotXY(data,size = (240,640),margin = 10,name = "data",labels=[], skip = 3,
                             cv2.FONT_HERSHEY_PLAIN,2,col)
         
         try:
-            pts = np.array([[x_, y_] for x_, y_ in zip(xx,yy)],np.int0)
+            pts = np.array([[x_, y_] for x_, y_ in zip(xx,yy)],np.int32)
             i+=1
             P.append(pts)
         except:
