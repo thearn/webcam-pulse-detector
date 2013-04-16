@@ -76,6 +76,8 @@ Quickstart:
 ```
 python get_pulse.py
 ```
+- If there is an error, try running `test_webcam.py` in the same directory to check if your openCV installation and webcam can be made to work
+with this application.
 
 Usage notes:
 ----------
