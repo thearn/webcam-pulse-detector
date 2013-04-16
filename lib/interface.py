@@ -108,6 +108,13 @@ def plotXY(data,size = (240,640),margin = 10,name = "data",labels=[], skip = 3,
             P.append(pts)
         except:
             pass #temporary
-    for p in P: #Polylines seems to have some trouble rendering multiple polys for some people
+    """ 
+    #Polylines seems to have some trouble rendering multiple polys for some people
+    for p in P:
         cv2.polylines(z, [p], False, (255,255,255),1)
+    """
+    #hack-y alternative:
+    for p in P:
+        for i in xrange(len(p)-1):
+            cv2.line(z,tuple(p[i]),tuple(p[i+1]), (255,255,255),1)    
     cv2.imshow(name,z)

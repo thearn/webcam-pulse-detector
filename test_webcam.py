@@ -9,11 +9,16 @@ while True:
     
     #create some test points
     pts1 = numpy.array([[0,0],[100,100]])
-    pts2 = numpy.array([[0,0],[0,500],[200,200]],numpy.int0)
+    pts2 = numpy.array([[0,0],[0,500],[200,200]])
+    pts3 = numpy.array([[10,3],[10,300],[100,250]])
     
+    #test out line function
+    for i in xrange(len(pts3)-1):
+        cv2.line(img,tuple(pts3[i]),tuple(pts3[i+1]), (255,255,255),1)
+        
     #test out the polylines function
     cv2.polylines(img, [pts1, pts2], False, (255,255,255),1)
-    
+        
     #show the result
     cv2.imshow("Camera", img)
 
@@ -21,3 +26,4 @@ while True:
     #Exit if user presses <Esc>
     if cv2.waitKey(10) == 27:
         break
+    
