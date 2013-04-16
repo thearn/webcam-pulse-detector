@@ -107,7 +107,7 @@ def plotXY(data,size = (240,640),margin = 10,name = "data",labels=[], skip = 3,
             i+=1
             P.append(pts)
         except:
-            pass
+            pass #temporary
         
     cv2.polylines(z, P, False, (255,255,255),1)
     cv2.imshow(name,z)
