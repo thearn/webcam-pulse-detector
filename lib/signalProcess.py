@@ -77,6 +77,9 @@ class BufferFFT(Component):
     toggles the 'ready' state to False.
     """
     ready = Bool(False, iotype="out")
+    fps = Float(iotype = "out")
+    size = Int(iotype = "out")
+    n = Int(iotype = "out")
     def __init__(self, n = 322, spike_limit = 5.):
         super(BufferFFT,self).__init__()
         self.n = n
@@ -121,12 +124,12 @@ class BufferFFT(Component):
     def execute(self):
         self.samples.append(self.data_in)
         self.times.append(time.time())
-        N = len(self.samples)
-        if N > self.n:
+        self.size = len(self.samples)
+        if self.size > self.n:
             self.ready = True
             self.samples = self.samples[-self.n:]
             self.times = self.times[-self.n:]
-        if N>4:
+        if self.size>4:
             self.fft = self.get_fft()
             if self.spike_limit:
                 if max(self.samples)-min(self.samples) > self.spike_limit:

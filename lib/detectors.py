@@ -30,7 +30,7 @@ class cascadeDetection(Component):
                  return_one = True):
         super(cascadeDetection,self).__init__()  
         self.add("frame_in", Array(iotype="in"))
-        self.add("detected", Array(iotype="out"))
+        self.add("detected", Array([[0,0,0,0]],iotype="out"))
         self.scaleFactor = scaleFactor
         self.persist = persist # keep last detected locations vs overwrite with none
         self.minNeighbors = minNeighbors

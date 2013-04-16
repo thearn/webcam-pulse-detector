@@ -1,4 +1,4 @@
-from openmdao.lib.datatypes.api import Float, Dict, Array, List, Int
+from openmdao.lib.datatypes.api import Float, Dict, Array, List, Int, Bool
 from openmdao.main.api import Component, Assembly
 import numpy as np
 import cv2
@@ -87,3 +87,31 @@ class equalizeContrast(CVwrapped):
     def __init__(self):
         super(equalizeContrast,self).__init__(cv2.equalizeHist)
         
+        
+class showBPMtext(Component):
+    ready = Bool(False,iotype = "in")
+    bpm = Float(iotype = "in")
+    x = Int(iotype = "in")
+    y = Int(iotype = "in")
+    fps = Float(iotype = "in")
+    size = Float(iotype = "in")
+    n = Int(iotype = "in")
+    
+    def __init__(self):
+        super(showBPMtext,self).__init__()
+        self.add("frame_in", Array(iotype="in"))
+        self.add("frame_out", Array(iotype="out"))
+    
+    def execute(self):
+        if self.ready:
+            col = (0,255,0)
+            text = "%0.0f bpm" % self.bpm
+            tsize = 2
+        else:
+            col = (100,255,100)
+            gap = (self.n - self.size) / self.fps
+            text = "(estimate: %0.0f bpm, wait %0.0f s)" % (self.bpm, gap)
+            tsize = 1
+        cv2.putText(self.frame_in,text,
+                    (self.x,self.y),cv2.FONT_HERSHEY_PLAIN,tsize,col)
+        self.frame_out = self.frame_in

@@ -1,7 +1,7 @@
 from openmdao.lib.datatypes.api import Float, Dict, Array, List, Int
 from openmdao.main.api import Component, Assembly
 
-from imageProcess import RGBSplit, RGBmuxer, equalizeContrast, Grayscale
+from imageProcess import RGBSplit, RGBmuxer, equalizeContrast, Grayscale, showBPMtext
 from detectors import faceDetector
 from sliceops import frameSlices, VariableEqualizerBlock, drawRectangles
 from signalProcess import BufferFFT, Cardiac, PhaseController
@@ -108,6 +108,8 @@ class findFaceGetPulse(Assembly):
                                                 state = True))
         self.driver.workflow.add("bpm_flasher")   
         
+        self.add("show_bpm_text", showBPMtext())
+        self.driver.workflow.add("show_bpm_text")
         
         #-----------connections-----------
         # here is where we establish the relationships between the components 
@@ -175,5 +177,16 @@ class findFaceGetPulse(Assembly):
         
         #output the frame containing the forehead highlighting 
         #up to assembly level, as the final output frame.
-        self.connect("highlight_fhd.frame_out", "frame_out") 
+        #self.connect("highlight_fhd.frame_out", "frame_out") 
+        
+        self.connect("highlight_fhd.frame_out", "show_bpm_text.frame_in") 
+        self.connect("measure_heart.bpm", "show_bpm_text.bpm")
+        self.connect("find_faces.detected[0][0]", "show_bpm_text.x")
+        self.connect("find_faces.detected[0][1]", "show_bpm_text.y")
+        self.connect("fft.fps", "show_bpm_text.fps")
+        self.connect("fft.size", "show_bpm_text.size")
+        self.connect("fft.n", "show_bpm_text.n")
+        
+        self.connect("fft.ready", "show_bpm_text.ready")
+        self.connect("show_bpm_text.frame_out", "frame_out") 
         
