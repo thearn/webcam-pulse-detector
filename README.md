@@ -33,6 +33,15 @@ Support for pulse-detection on multiple simultaneous people in an camera's
 image stream is definitely possible, but at the moment only the information from one face 
 is extracted for cardiac analysis
 
+The overall dataflow for the real-time signal processing looks like:
+
+![Alt text](design.png "Signal processing")
+
+This process design is implemented in the assembly object defined in lib/processors.py.
+The definition of each component block shown above can be found in the source 
+files lib/imageProcess.py, lib/signalProcess.py, and lib/sliceops.py.
+
+
 Requirements:
 ---------------
 

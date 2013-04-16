@@ -3,6 +3,7 @@ from lib.processors import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey,destroyWindow, moveWindow
 import numpy as np      
 
+
 class getPulseApp(object):
     """
     Python application that finds a face in a webcam stream, then isolates the
@@ -28,7 +29,7 @@ class getPulseApp(object):
         #to the camera device or part of the GUI
         self.processor = findFaceGetPulse(bpm_limits = [50,160],
                                           data_spike_limit = 13.,
-                                          face_detector_smoothness = 10.)
+                                          face_detector_smoothness = 10.)  
         
         #Init parameters for the cardiac data plot
         self.bpm_plot = False
@@ -71,9 +72,9 @@ class getPulseApp(object):
         plotXY([[self.processor.fft.times, 
                  self.processor.fft.samples],
             [self.processor.fft.even_times[4:-4], 
-             self.processor.heart.filtered[4:-4]],
-                [self.processor.heart.freqs, 
-                 self.processor.heart.fft]], 
+             self.processor.measure_heart.filtered[4:-4]],
+                [self.processor.measure_heart.freqs, 
+                 self.processor.measure_heart.fft]], 
                labels = [False, False, True],
                showmax = [False,False, "bpm"], 
                name = self.plot_title, 

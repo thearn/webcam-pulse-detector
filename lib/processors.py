@@ -50,16 +50,16 @@ class findFaceGetPulse(Assembly):
         # added to the driver's workflow 
         
         #splits input color image into R,G,B channels
-        self.add("splitter", RGBSplit())
-        self.driver.workflow.add("splitter")
+        self.add("RGBsplitter", RGBSplit())
+        self.driver.workflow.add("RGBsplitter")
         
         #converts input color image to grayscale
-        self.add("gray", Grayscale())
-        self.driver.workflow.add("gray")        
+        self.add("grayscale", Grayscale())
+        self.driver.workflow.add("grayscale")        
         
         #equalizes contast on the grayscale'd input image
-        self.add("eq", equalizeContrast())
-        self.driver.workflow.add("eq")       
+        self.add("contrast_eq", equalizeContrast())
+        self.driver.workflow.add("contrast_eq")       
         
         #finds faces within the grayscale's and contast-adjusted input image
         #Sets smoothness parameter to help prevent 'jitteriness' in the face tracking
@@ -96,8 +96,8 @@ class findFaceGetPulse(Assembly):
         #takes in a computed FFT and estimates cardiac data
         # 'bpm_limits' sets the lower and upper limits (in bpm) for heartbeat
         # detection. 50 to 160 bpm is a pretty fair range here.
-        self.add("heart", Cardiac(bpm_limits = bpm_limits))
-        self.driver.workflow.add("heart")
+        self.add("measure_heart", Cardiac(bpm_limits = bpm_limits))
+        self.driver.workflow.add("measure_heart")
         
         #toggles flashing of the detected foreheads in sync with the detected 
         #heartbeat. the 'default_a' and 'default_b' set the nominal contrast
@@ -118,14 +118,14 @@ class findFaceGetPulse(Assembly):
         
         # pass image frames from the assembly-level input arrays to the RGB 
         # splitter & grayscale converters (separately)
-        self.connect("frame_in", "splitter.frame_in")
-        self.connect("frame_in", "gray.frame_in")
+        self.connect("frame_in", "RGBsplitter.frame_in")
+        self.connect("frame_in", "grayscale.frame_in")
         
         #pass grayscaled image to the contrast equalizer
-        self.connect("gray.frame_out", "eq.frame_in")
+        self.connect("grayscale.frame_out", "contrast_eq.frame_in")
         
         #pass the contrast adjusted grayscale image to the face detector
-        self.connect("eq.frame_out", "find_faces.frame_in")
+        self.connect("contrast_eq.frame_out", "find_faces.frame_in")
         
         # now pass our original image frame and the detected faces locations 
         # to the face highlighter
@@ -140,7 +140,7 @@ class findFaceGetPulse(Assembly):
         # pass the original image frame and detected face locations
         # to the face subimage collector
         self.connect("find_faces.detected", "grab_faces.rects_in")
-        self.connect("eq.frame_out", "grab_faces.frame_in")
+        self.connect("contrast_eq.frame_out", "grab_faces.frame_in")
         
         # --Now we set the connectivity for the components that will do the 
         # --actual analysis
@@ -148,7 +148,7 @@ class findFaceGetPulse(Assembly):
         #pass the green channel of the original image frame and detected 
         #face locations to the forehead subimage collector
         self.connect("find_faces.foreheads", "grab_foreheads.rects_in")
-        self.connect("splitter.G", "grab_foreheads.frame_in")   
+        self.connect("RGBsplitter.G", "grab_foreheads.frame_in")   
         
         #send the mean of the first detected forehead subimage (green channel)
         #to the buffering FFT component
@@ -159,11 +159,11 @@ class findFaceGetPulse(Assembly):
         
         #Send the FFT outputs (the fft & associated freqs in hz) to the cardiac
         #data estimator
-        self.connect("fft.fft", "heart.fft_in")
-        self.connect("fft.freqs", "heart.freqs_in")
+        self.connect("fft.fft", "measure_heart.fft_in")
+        self.connect("fft.freqs", "measure_heart.freqs_in")
         
         #connect the estimated heartbeat phase to the forehead flashing controller
-        self.connect("heart.phase", "bpm_flasher.phase")
+        self.connect("measure_heart.phase", "bpm_flasher.phase")
         self.connect("fft.ready", "bpm_flasher.state")
         
         #connect the flash controller to the forehead highlighter 
