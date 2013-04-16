@@ -12,7 +12,10 @@ while True:
     pts2 = numpy.array([[0,0],[0,500],[200,200]],numpy.int0)
     
     #test out the polylines function
-    cv2.polylines(img, [pts1, pts2], False, (255,255,255),1)
+    #cv2.polylines(img, [pts1, pts2], False, (255,255,255),1)
+    
+    pts1 = numpy.array([[0,0],[100,100]])
+    cv2.polylines(img, pts1, False, (255,255,255),1)
     
     #show the result
     cv2.imshow("Camera", img)
