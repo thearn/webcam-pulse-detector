@@ -37,10 +37,11 @@ The overall dataflow/execution order for the real-time signal processing looks l
 
 ![Alt text](design.png "Signal processing")
 
-This process design is implemented in the assembly object defined in lib/processors.py.
-The definition of each component block shown above can be found in the source 
-files lib/imageProcess.py, lib/signalProcess.py, and lib/sliceops.py.
-The @bin and @bout blocks denote top-level input and output.
+This process design is implemented in the assembly object defined in [lib/processors.py](lib/processors.py).
+
+The definition of each component block used can be found in the source 
+files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and [lib/sliceops.py](lib/sliceops.py).
+The `@bin` and `@bout` blocks denote top-level input and output.
 
 
 Requirements:
