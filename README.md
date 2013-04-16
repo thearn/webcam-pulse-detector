@@ -40,6 +40,7 @@ The overall dataflow for the real-time signal processing looks like:
 This process design is implemented in the assembly object defined in lib/processors.py.
 The definition of each component block shown above can be found in the source 
 files lib/imageProcess.py, lib/signalProcess.py, and lib/sliceops.py.
+The @bin and @bout blocks denote assembly-level input and output arrays.
 
 
 Requirements:
