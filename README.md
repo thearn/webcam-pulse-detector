@@ -95,7 +95,8 @@ be released by pressing "S" again.
 isolated in about 15 seconds.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
-started over
+started over. The sensitivity of this feature can be tweaked on line 32 of [get_pulse.py](get_pulse.py), along with 
+other mutable parameters of the analysis.
 
 TODO:
 ------
