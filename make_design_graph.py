@@ -12,7 +12,7 @@ assembly.
 assembly = findFaceGetPulse()
 graph = assembly._depgraph._graph
 
-#prune a few unconnected nodes not related to what we want
+#prune a few unconnected nodes not related to the actual analysis
 graph.remove_node("@xin")
 graph.remove_node("@xout")
 graph.remove_node("driver")
