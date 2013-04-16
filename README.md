@@ -56,7 +56,7 @@ numpy-compatible interface in the cv2 bindings.
 - OpenMDAO v0.5.5+ (http://openmdao.org/)
 
 OpenMDAO is an open-source engineering framework that serves as a convenient 
-object-oriented enviroment to containerize the required real-time analyses, and 
+enviroment to containerize the required real-time analyses, and 
 allow for it to be easily tweaked to specification.
 It requires python 2.6+, numpy, scipy, and matplotlib 
 (see http://openmdao.org/docs/getting-started/requirements.html)
