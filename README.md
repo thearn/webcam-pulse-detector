@@ -92,14 +92,13 @@ be released by pressing "S" again.
    2. extracted heartbeat signal
    3. Power spectral density, with local maxima indicating the heartrate (in beats per minute). 
 - With consistent lighting and minimal head motion, a stable heartbeat should be 
-isolated in about 15 seconds.
+isolated in about 15 to 20 seconds. A count-down is shown in the image frame.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
 started over
 
 TODO:
 ------
-- Show the detected bpm somewhere in the camera stream
 - Support for multiple individuals
 - Smoother tracking of data from foreheads, perhaps by buffering and registering/inverse-transforming image subframes
 

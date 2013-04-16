@@ -175,10 +175,7 @@ class findFaceGetPulse(Assembly):
         #connect collection of all detected faces up to assembly level for output
         self.connect("grab_faces.combined", "faces")
         
-        #output the frame containing the forehead highlighting 
-        #up to assembly level, as the final output frame.
-        #self.connect("highlight_fhd.frame_out", "frame_out") 
-        
+        # text display of estimated bpm
         self.connect("highlight_fhd.frame_out", "show_bpm_text.frame_in") 
         self.connect("measure_heart.bpm", "show_bpm_text.bpm")
         self.connect("find_faces.detected[0][0]", "show_bpm_text.x")

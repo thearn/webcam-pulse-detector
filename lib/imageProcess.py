@@ -89,6 +89,9 @@ class equalizeContrast(CVwrapped):
         
         
 class showBPMtext(Component):
+    """
+    Shows the estimated BPM in the image frame
+    """
     ready = Bool(False,iotype = "in")
     bpm = Float(iotype = "in")
     x = Int(iotype = "in")
