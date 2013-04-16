@@ -7,8 +7,9 @@ A python application that detects the heart-rate of an individual using their
 computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
 Inspired by reviewing recent work on Eulerian Video Magnification (http://people.csail.mit.edu/mrub/vidmag/), 
-with motivation to implement something comparable in python-opencv based on a few previous efforts (such as 
-https://github.com/mossblaser/HeartMonitor).
+with motivation to implement something visually comparable (though not necessarily identical) to their pulse detection examples 
+in python-opencv. 
+Comparable to a few previous efforts (such as https://github.com/mossblaser/HeartMonitor).
 
 Data processing is implemented within an openMDAO (http://openmdao.org/) assembly object to facilitate rapid 
 prototyping/redesign of the real-time analysis, and for simple embedding into a python application.
@@ -17,8 +18,8 @@ How it works:
 -----------------
 This application uses openCV (http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
 from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
-intensity in the forehead location, in the subimage's green channel alone. Physiological data can be estimated
-this way thanks to the optical absorbtion characteristics of oxygenated hemoglobin. 
+intensity in the forehead location, in the subimage's green channel alone (the blue channel tends to be very noisy). 
+Physiological data can be estimated this way thanks to the optical absorbtion characteristics of oxygenated hemoglobin. 
 
 With good lighting and minimal noise due to motion, a stable heartbeat should be 
 isolated in about 15 seconds. Other physiological waveforms, such as Mayer waves 
@@ -38,9 +39,6 @@ The overall dataflow/execution order for the real-time signal processing looks l
 ![Alt text](design.png "Signal processing")
 
 This process design is implemented in the openMDAO assembly object defined in [lib/processors.py](lib/processors.py).
-Essentially, the portion of the analysis that tries to emulate the Eulerian Video Magnification video feedback mechanism 
-is shown in the lower-right corner of this graph, from the `fft` component to `highlight_fhd`. The other components handle
-color pre-processing, head detection/tracking, annotation and highlighting, etc.
 
 The definition of each component block used can be found in the source 
 files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and 
@@ -95,7 +93,8 @@ be released by pressing "S" again.
 isolated in about 15 to 20 seconds. A count-down is shown in the image frame.
 - If a large spike in optical intensity is measured in the data (due to motion 
 noise, sudden change in lighting, etc) the data collection process is reset and 
-started over
+started over. The sensitivity of this feature can be tweaked by changing `data_spike_limit` on line 31 of [get_pulse.py](get_pulse.py).
+Other mutable parameters of the analysis can be changed here as well.
 
 TODO:
 ------
