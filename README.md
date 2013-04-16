@@ -38,8 +38,9 @@ The overall dataflow/execution order for the real-time signal processing looks l
 ![Alt text](design.png "Signal processing")
 
 This process design is implemented in the openMDAO assembly object defined in [lib/processors.py](lib/processors.py).
-The portion of the analysis that tries to emulate the Eulerian Video Magnification feedback loop is shown in the 
-lower-right corner of this graph, from the `fft` component to `highlight_fhd`.
+Essentially, the portion of the analysis that tries to emulate the Eulerian Video Magnification video feedback mechanism 
+is shown in the lower-right corner of this graph, from the `fft` component to `highlight_fhd`. The other components handle
+color pre-processing, head detection/tracking, annotation and highlighting, etc.
 
 The definition of each component block used can be found in the source 
 files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and 
