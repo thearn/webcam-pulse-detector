@@ -44,7 +44,7 @@ color pre-processing, head detection/tracking, annotation and highlighting, etc.
 
 The definition of each component block used can be found in the source 
 files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and 
-[lib/sliceops.py](lib/sliceops.py). The `@bin` and `@bout` blocks denote top-level input and output.
+[lib/sliceops.py](lib/sliceops.py). The `@bin` and `@bout` blocks in the above graph denote assembly-level input and output.
 
 
 Requirements:
