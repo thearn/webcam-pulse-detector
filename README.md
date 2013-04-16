@@ -33,7 +33,7 @@ Support for pulse-detection on multiple simultaneous people in an camera's
 image stream is definitely possible, but at the moment only the information from one face 
 is extracted for cardiac analysis
 
-The overall dataflow for the real-time signal processing looks like:
+The overall dataflow/execution order for the real-time signal processing looks like:
 
 ![Alt text](design.png "Signal processing")
 
