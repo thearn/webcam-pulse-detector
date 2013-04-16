@@ -7,7 +7,7 @@ A python application that detects the heart-rate of an individual using their
 computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
 Inspired by reviewing recent work on Eulerian Video Magnification (http://people.csail.mit.edu/mrub/vidmag/), 
-with motivation to implement something comparable in python-opencv based on a few previous efforts (such as 
+with motivation to implement something comparable to their pulse detection examples in python-opencv, based on a few previous efforts (such as 
 https://github.com/mossblaser/HeartMonitor).
 
 Data processing is implemented within an openMDAO (http://openmdao.org/) assembly object to facilitate rapid 
@@ -38,9 +38,9 @@ The overall dataflow/execution order for the real-time signal processing looks l
 ![Alt text](design.png "Signal processing")
 
 This process design is implemented in the openMDAO assembly object defined in [lib/processors.py](lib/processors.py).
-Essentially, the portion of the analysis that tries to emulate the Eulerian Video Magnification video feedback mechanism 
-is shown in the lower-right corner of this graph, from the `fft` component to `highlight_fhd`. The other components handle
-color pre-processing, head detection/tracking, annotation and highlighting, etc.
+Essentially, the portion of the analysis that tries to emulate the look of the Eulerian Video Magnification video 
+feedback is shown in the lower-right corner of this graph, from the `fft` component to `highlight_fhd`. The other 
+components handle color pre-processing, head detection/tracking, annotation and highlighting, etc.
 
 The definition of each component block used can be found in the source 
 files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and 
