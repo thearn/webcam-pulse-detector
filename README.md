@@ -20,7 +20,7 @@ This application uses openCV (http://opencv.org/) to find the location of the us
 from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
 intensity in the forehead location, in the subimage's green channel alone (a better color mixing ratio may exist, but the 
 blue channel tends to be very noisy). Physiological data can be estimated this way thanks to the optical absorbtion 
-characteristics of oxygenated hemoglobin (see http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434). 
+characteristics of (oxy-) hemoglobin (see http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434). 
 
 With good lighting and minimal noise due to motion, a stable heartbeat should be 
 isolated in about 15 seconds. Other physiological waveforms, such as Mayer waves 
