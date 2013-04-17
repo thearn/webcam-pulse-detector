@@ -26,14 +26,14 @@ With good lighting and minimal noise due to motion, a stable heartbeat should be
 isolated in about 15 seconds. Other physiological waveforms, such as Mayer waves 
 (http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream.
 
-Once the user's pulse signal has been isolated, temporal phase variation associated with the 
+Once the user's pulse signal has been isolated, real-time phase variation associated with the 
 detected hearbeat frequency is also computed. This allows for the heartbeat 
 frequency to be exaggerated in the post-process frame rendering; causing the 
-highlighted forhead location to pulse in sync with the user's own heartbeat (in real time).
+highlighted forhead location to pulse in sync with the user's own heartbeat.
 
 Support for pulse-detection on multiple simultaneous people in an camera's 
 image stream is definitely possible, but at the moment only the information from one face 
-is extracted for cardiac analysis
+is extracted for analysis
 
 The overall dataflow/execution order for the real-time signal processing looks like:
 
