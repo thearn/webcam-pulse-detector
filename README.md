@@ -7,8 +7,8 @@ A python application that detects the heart-rate of an individual using their
 computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
 Inspired by reviewing recent work on Eulerian Video Magnification (http://people.csail.mit.edu/mrub/vidmag/), 
-with motivation to implement something visually comparable (though not necessarily identical) to their pulse detection examples 
-in python-opencv. 
+with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
+pulse detection examples in python-opencv. 
 Comparable to a few previous efforts (such as https://github.com/mossblaser/HeartMonitor).
 
 Data processing is implemented within an openMDAO (http://openmdao.org/) assembly object to facilitate rapid 
