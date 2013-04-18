@@ -28,7 +28,7 @@ isolated in about 15 seconds. Other physiological waveforms, such as Mayer waves
 
 Once the user's pulse signal has been isolated, real-time phase variation associated with the 
 detected hearbeat frequency is also computed. This allows for the heartbeat 
-frequency to be exaggerated in the post-process frame rendering; causing the 
+frequency to be exaggerated in the post-process frame rendering, causing the 
 highlighted forhead location to pulse in sync with the user's own heartbeat.
 
 Support for pulse-detection on multiple simultaneous people in an camera's 
