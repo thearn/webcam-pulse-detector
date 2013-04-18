@@ -53,8 +53,8 @@ def combine(left, right):
     
     return comb   
 
-def plotXY(data,size = (240,640),margin = 10,name = "data",labels=[], skip = 3,
-           showmax = [], bg = None):
+def plotXY(data,size = (280,640),margin = 25,name = "data",labels=[], skip = [],
+           showmax = [], bg = None,label_ndigits = [], showmax_digits=[]):
     for x,y in data:
         if len(x) < 2 or len(y) < 2:
             return
@@ -86,20 +86,24 @@ def plotXY(data,size = (240,640),margin = 10,name = "data",labels=[], skip = 3,
         
         xx = (w-2*margin)*(x - x.min()) / (x.max() - x.min())+margin
         yy = (h-2*margin)*(y - y.min()) / (y.max() - y.min())+margin + i*h
-        
         mx = max(yy)
         if labels:
             if labels[i]:
                 for ii in xrange(len(x)):
-                    if ii%skip == 0:
+                    if ii%skip[i] == 0:
                         col = (255,255,255)
-                        cv2.putText(z,"%0.0f"%x[ii],(int(xx[ii]),int((i+1)*h)),
+                        ss = '{0:.%sf}' % label_ndigits[i]
+                        ss = ss.format(x[ii]) 
+                        cv2.putText(z,ss,(int(xx[ii]),int((i+1)*h)),
                                     cv2.FONT_HERSHEY_PLAIN,1,col)           
         if showmax:
             if showmax[i]:
                 col = (0,255,0)    
                 ii = np.argmax(-y)
-                cv2.putText(z,"%0.0f %s" % (x[ii], showmax[i]),(int(xx[ii]),int((yy[ii]))),
+                ss = '{0:.%sf} %s' % (showmax_digits[i], showmax[i])
+                ss = ss.format(x[ii]) 
+                #"%0.0f %s" % (x[ii], showmax[i])
+                cv2.putText(z,ss,(int(xx[ii]),int((yy[ii]))),
                             cv2.FONT_HERSHEY_PLAIN,2,col)
         
         try:

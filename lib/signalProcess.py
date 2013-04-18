@@ -135,42 +135,65 @@ class BufferFFT(Component):
                 if max(self.samples)-min(self.samples) > self.spike_limit:
                     self.reset()
 
-
-class Cardiac(Component):
+class bandProcess(Component):
     """
-    Component to isolate portions of a pre-computed time series FFT 
-    corresponding to human heartbeats
+    Component to isolate specific frequency bands
     """
-    bpm = Float(iotype="out")
-    def __init__(self, bpm_limits = [50,160]):
-        super(Cardiac,self).__init__()
+    hz = Float(iotype="out")
+    peak_hz = Float(iotype="out")
+    phase = Float(iotype="out")
+    def __init__(self, limits = [0.,3.], make_filtered = True, 
+                 operation = "pass"):
+        super(bandProcess,self).__init__()
         self.add("freqs_in",Array(iotype="in"))
         self.add("fft_in", Array(iotype="in"))
         
         self.add("freqs", Array(iotype="out"))
-        self.add("filtered", Array(iotype="out"))
+        self.make_filtered = make_filtered
+        if make_filtered:
+            self.add("filtered", Array(iotype="out"))
         self.add("fft", Array(iotype="out"))
-        self.add("phase",Float(iotype="out"))
-        self.bpm_limits = bpm_limits
+        self.limits = limits
+        self.operation = operation
         
     def execute(self):
-        idx = np.where((self.freqs_in > self.bpm_limits[0]/60.) 
-                       & (self.freqs_in < self.bpm_limits[1]/60.))
-        self.freqs = 60*self.freqs_in[idx] 
-        self.fft = np.abs(self.fft_in[idx])
+        if self.operation == "pass":
+            idx = np.where((self.freqs_in > self.limits[0]) 
+                           & (self.freqs_in < self.limits[1]))
+        else:
+            idx = np.where((self.freqs_in < self.limits[0]) 
+                           & (self.freqs_in > self.limits[1]))
+        self.freqs = self.freqs_in[idx] 
+        self.fft = np.abs(self.fft_in[idx])**2
         
-        fft_out = 0*self.fft_in
-        fft_out[idx] = self.fft_in[idx]
-        
-        if len(fft_out) > 2:
-            self.filtered = np.fft.irfft(fft_out) 
+        if self.make_filtered:
+            fft_out = 0*self.fft_in
+            fft_out[idx] = self.fft_in[idx]
             
-            self.filtered = self.filtered / np.hamming(len(self.filtered))
-            
+            if len(fft_out) > 2:
+                self.filtered = np.fft.irfft(fft_out) 
+                
+                self.filtered = self.filtered / np.hamming(len(self.filtered))
         try:
             maxidx = np.argmax(self.fft)
-            self.bpm = self.freqs[maxidx]
+            self.peak_hz = self.freqs[maxidx]
             self.phase = np.angle(self.fft_in)[idx][maxidx]
         except:
             pass #temporary fix for no-data situations
+
+class Cardiac(bandProcess):
+    """
+    Component to isolate portions of a pre-computed time series FFT 
+    corresponding to human heartbeats
+    """
+    
+    def __init__(self, bpm_limits = [50,160]):
+        super(Cardiac,self).__init__()
+        self.add("bpm", Float(iotype="out"))
+        self.limits = [bpm_limits[0]/60., bpm_limits[1]/60.]
+        
+    def execute(self):
+        super(Cardiac,self).execute()
+        self.freqs = 60*self.freqs
+        self.bpm = 60*self.peak_hz
         
