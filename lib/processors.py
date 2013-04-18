@@ -4,7 +4,7 @@ from openmdao.main.api import Component, Assembly
 from imageProcess import RGBSplit, RGBmuxer, equalizeContrast, Grayscale, showBPMtext
 from detectors import faceDetector
 from sliceops import frameSlices, VariableEqualizerBlock, drawRectangles
-from signalProcess import BufferFFT, Cardiac, PhaseController, Mayer
+from signalProcess import BufferFFT, Cardiac, PhaseController
 from numpy import mean
 import time, cv2
 
