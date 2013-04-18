@@ -89,7 +89,7 @@ class findFaceGetPulse(Assembly):
         # 'spike_limit' limits the size of acceptable spikes in the raw measured
         # data. When exceeeded due to poor data, the fft component's buffers 
         # are reset
-        self.add("fft", BufferFFT(n=400,
+        self.add("fft", BufferFFT(n=425,
                                   spike_limit = data_spike_limit))
         self.driver.workflow.add("fft")
         
