@@ -4,7 +4,7 @@ from openmdao.main.api import Component, Assembly
 from imageProcess import RGBSplit, RGBmuxer, equalizeContrast, Grayscale, showBPMtext
 from detectors import faceDetector
 from sliceops import frameSlices, VariableEqualizerBlock, drawRectangles
-from signalProcess import BufferFFT, Cardiac, PhaseController
+from signalProcess import BufferFFT, Cardiac, PhaseController, Mayer
 from numpy import mean
 import time, cv2
 
@@ -89,7 +89,7 @@ class findFaceGetPulse(Assembly):
         # 'spike_limit' limits the size of acceptable spikes in the raw measured
         # data. When exceeeded due to poor data, the fft component's buffers 
         # are reset
-        self.add("fft", BufferFFT(n=322,
+        self.add("fft", BufferFFT(n=400,
                                   spike_limit = data_spike_limit))
         self.driver.workflow.add("fft")
         

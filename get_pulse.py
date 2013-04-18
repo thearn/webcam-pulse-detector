@@ -77,6 +77,9 @@ class getPulseApp(object):
                  self.processor.measure_heart.fft]], 
                labels = [False, False, True],
                showmax = [False,False, "bpm"], 
+               label_ndigits = [0,0,0],
+               showmax_digits = [0,0,1],
+               skip = [3,3,4],
                name = self.plot_title, 
                bg = self.processor.grab_faces.slices[0])
     

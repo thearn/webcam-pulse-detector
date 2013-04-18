@@ -135,6 +135,41 @@ class BufferFFT(Component):
                 if max(self.samples)-min(self.samples) > self.spike_limit:
                     self.reset()
 
+class bandPass(Component):
+    """
+    Component to isolate specific frequency bands
+    """
+    hz = Float(iotype="out")
+    def __init__(self, limits = [0.05,0.35]):
+        super(Mayer,self).__init__()
+        self.add("freqs_in",Array(iotype="in"))
+        self.add("fft_in", Array(iotype="in"))
+        
+        self.add("freqs", Array(iotype="out"))
+        self.add("filtered", Array(iotype="out"))
+        self.add("fft", Array(iotype="out"))
+        self.limits = limits
+        
+    def execute(self):
+        idx = np.where((self.freqs_in > self.limits[0]) 
+                       & (self.freqs_in < self.limits[1]))
+        self.freqs = self.freqs_in[idx] 
+        self.fft = np.abs(self.fft_in[idx])
+        
+        fft_out = 0*self.fft_in
+        fft_out[idx] = self.fft_in[idx]
+        
+        if len(fft_out) > 2:
+            self.filtered = np.fft.irfft(fft_out) 
+            
+            self.filtered = self.filtered / np.hamming(len(self.filtered))
+            
+        try:
+            maxidx = np.argmax(self.fft)
+            #self.bpm = self.freqs[maxidx]
+            #self.phase = np.angle(self.fft_in)[idx][maxidx]
+        except:
+            pass #temporary fix for no-data situations
 
 class Cardiac(Component):
     """
@@ -174,3 +209,39 @@ class Cardiac(Component):
         except:
             pass #temporary fix for no-data situations
         
+
+class Mayer(Component):
+    """
+    Component to isolate mayer waves
+    """
+    hz = Float(iotype="out")
+    def __init__(self, limits = [0.05,0.35]):
+        super(Mayer,self).__init__()
+        self.add("freqs_in",Array(iotype="in"))
+        self.add("fft_in", Array(iotype="in"))
+        
+        self.add("freqs", Array(iotype="out"))
+        self.add("filtered", Array(iotype="out"))
+        self.add("fft", Array(iotype="out"))
+        self.limits = limits
+        
+    def execute(self):
+        idx = np.where((self.freqs_in > self.limits[0]) 
+                       & (self.freqs_in < self.limits[1]))
+        self.freqs = self.freqs_in[idx] 
+        self.fft = np.abs(self.fft_in[idx])
+        
+        fft_out = 0*self.fft_in
+        fft_out[idx] = self.fft_in[idx]
+        
+        if len(fft_out) > 2:
+            self.filtered = np.fft.irfft(fft_out) 
+            
+            self.filtered = self.filtered / np.hamming(len(self.filtered))
+            
+        try:
+            maxidx = np.argmax(self.fft)
+            #self.bpm = self.freqs[maxidx]
+            #self.phase = np.angle(self.fft_in)[idx][maxidx]
+        except:
+            pass #temporary fix for no-data situations
