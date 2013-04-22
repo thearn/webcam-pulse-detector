@@ -1,4 +1,4 @@
-![Alt text](screenshot.png "Screenshot")
+![Alt text](http://i.imgur.com/FHjCP1K.jpg "Screenshot")
 
 webcam-pulse-detector
 =====================
@@ -37,7 +37,7 @@ is extracted for analysis
 
 The overall dataflow/execution order for the real-time signal processing looks like:
 
-![Alt text](design.png "Signal processing")
+![Alt text](http://i.imgur.com/xS7O8U3.png "Signal processing")
 
 This signal processing design is implemented in the openMDAO assembly object defined in [lib/processors.py](lib/processors.py).
 
