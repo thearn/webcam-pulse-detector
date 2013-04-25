@@ -110,7 +110,7 @@ Other mutable parameters of the analysis can be changed here as well.
 
 TODO:
 ------
-- There have been some requests for a youtube video demo
+- There have been some requests for a video demo
 - Instead of processing using the green channel alone, it is likely that some fixed combination of the statistics of the
 R,G,B channels could instead be optimal (though I was unable to find a simple combination that was better than green
 alone). If so, the mixing ratios might be determinable from the forward projection matrices of PCA or ICA operators 
