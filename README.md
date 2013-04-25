@@ -15,8 +15,8 @@ Data processing is implemented within an [OpenMDAO](http://openmdao.org/) assemb
 prototyping/redesign of the real-time analysis, and for simple embedding into a python application.
 
 This code was developed at [NASA Glenn Research Center](http://www.nasa.gov/centers/glenn/home/index.html) in 
-support of the [OpenMDAO](http://openmdao.org/) project of the Aeronautical Sciences Project (under NASA's 
-[Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/)), as well as the Crew State Monitoring Element 
+support of [OpenMDAO](http://openmdao.org/), under the Aeronautical Sciences Project in NASA's 
+[Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/), as well as the Crew State Monitoring Element 
 of the Vehicle Systems Safety Technologies Project, in NASA’s 
 [Aviation Safety Program](http://www.aeronautics.nasa.gov/programs_avsafe.htm).
 
