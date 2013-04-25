@@ -1,4 +1,4 @@
-![Alt text](http://i.imgur.com/FHjCP1K.jpg "Screenshot")
+![Alt text](http://i.imgur.com/aJfcCUu.jpg "Screenshot")
 
 webcam-pulse-detector
 ---------------------
