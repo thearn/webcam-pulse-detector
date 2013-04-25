@@ -8,7 +8,7 @@ computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windo
 
 Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
 with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
-pulse detection examples in python-opencv. 
+pulse detection examples using [Python](http://python.org/) and [OpenCV](http://opencv.org/). 
 Comparable to a few previous efforts in this area (such as https://github.com/mossblaser/HeartMonitor).
 
 Data processing is implemented within an [OpenMDAO](http://openmdao.org/) assembly object to facilitate rapid 
@@ -24,7 +24,7 @@ A list of other open-source NASA projects can be found at [code.nasa.gov](http:/
 
 How it works:
 -----------------
-This application uses [openCV](http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
+This application uses [OpenCV](http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
 from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
 intensity in the forehead location, in the subimage's green channel alone (a better color mixing ratio may exist, but the 
 blue channel tends to be very noisy). Physiological data can be estimated this way thanks to the optical absorbtion 
