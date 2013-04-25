@@ -32,7 +32,8 @@ blue channel tends to be very noisy). Physiological data can be estimated this w
 characteristics of (oxy-) hemoglobin (see http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434). 
 
 With good lighting and minimal noise due to motion, a stable heartbeat should be 
-isolated in about 15 seconds. Other physiological waveforms, such as [Mayer waves](http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream.
+isolated in about 15 seconds. Other physiological waveforms (such as 
+[Mayer waves](http://en.wikipedia.org/wiki/Mayer_waves)) should also be visible in the raw data stream.
 
 Once the user's pulse signal has been isolated, real-time phase variation associated with the 
 detected hearbeat frequency is also computed. This allows for the heartbeat 
