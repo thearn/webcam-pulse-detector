@@ -76,11 +76,18 @@ virtualenv, which must be activated before use (see the Quickstart section below
 
 Quickstart:
 ------------
-- Activate the openMDAO virtual python environment in a command or terminal window
+- Activate the openMDAO virtual python environment in a command or terminal window. On Linux and OSX, this is done by
+running:
 
 ```
 . OpenMDAO/bin/activate
 ```
+Or on Windows:
+
+```
+OpenMDAO\Scripts\activate
+```
+
 - In the activated environment, navigate to the downloaded source directory, and run get_pulse.py to start the application
 
 ```
