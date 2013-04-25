@@ -6,31 +6,32 @@ webcam-pulse-detector
 A python application that detects the heart-rate of an individual using their 
 computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
-Inspired by reviewing recent work on Eulerian Video Magnification (http://people.csail.mit.edu/mrub/vidmag/), 
+Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
 with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
 pulse detection examples in python-opencv. 
-Comparable to a few previous efforts (such as https://github.com/mossblaser/HeartMonitor).
+Comparable to a few previous efforts in this area (such as https://github.com/mossblaser/HeartMonitor).
 
 Data processing is implemented within an [OpenMDAO](http://openmdao.org/) assembly object to facilitate rapid 
 prototyping/redesign of the real-time analysis, and for simple embedding into a python application.
 
-This software was developed at [NASA Glenn Research Center](http://www.nasa.gov/centers/glenn/home/index.html) in 
-support of the Aeronautical Sciences Project of NASA's 
-[Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/), as well as the Crew State Monitoring Element 
+This code was developed at [NASA Glenn Research Center](http://www.nasa.gov/centers/glenn/home/index.html) in 
+support of the [OpenMDAO](http://openmdao.org/) project of the Aeronautical Sciences Project (under NASA's 
+[Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/)), as well as the Crew State Monitoring Element 
 of the Vehicle Systems Safety Technologies Project, in NASA’s 
 [Aviation Safety Program](http://www.aeronautics.nasa.gov/programs_avsafe.htm).
 
+A list of other open-source NASA projects can be found at [code.nasa.gov](http://code.nasa.gov/project/).
+
 How it works:
 -----------------
-This application uses openCV (http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
+This application uses [openCV](http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
 from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
 intensity in the forehead location, in the subimage's green channel alone (a better color mixing ratio may exist, but the 
 blue channel tends to be very noisy). Physiological data can be estimated this way thanks to the optical absorbtion 
 characteristics of (oxy-) hemoglobin (see http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434). 
 
 With good lighting and minimal noise due to motion, a stable heartbeat should be 
-isolated in about 15 seconds. Other physiological waveforms, such as Mayer waves 
-(http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream.
+isolated in about 15 seconds. Other physiological waveforms, such as [Mayer waves](http://en.wikipedia.org/wiki/Mayer_waves), should also be visible in the raw data stream.
 
 Once the user's pulse signal has been isolated, real-time phase variation associated with the 
 detected hearbeat frequency is also computed. This allows for the heartbeat 
@@ -49,7 +50,8 @@ This signal processing design is implemented in the openMDAO assembly object def
 
 The definition of each component block used can be found in the source 
 files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and 
-[lib/sliceops.py](lib/sliceops.py). The `@bin` and `@bout` blocks in the above graph denote assembly-level input and output.
+[lib/sliceops.py](lib/sliceops.py). The `@bin` and `@bout` blocks in the above graph denote assembly-level input and 
+output.
 
 
 Requirements:
