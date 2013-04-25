@@ -3,7 +3,7 @@
 webcam-pulse-detector
 ---------------------
 
-A python application that detects the heart-rate of an individual using their 
+A python code that detects the heart-rate of an individual using their 
 computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
 Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
