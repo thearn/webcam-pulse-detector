@@ -35,20 +35,20 @@ With good lighting and minimal noise due to motion, a stable heartbeat should be
 isolated in about 15 seconds. Other physiological waveforms (such as 
 [Mayer waves](http://en.wikipedia.org/wiki/Mayer_waves)) should also be visible in the raw data stream.
 
-Once the user's pulse signal has been isolated, real-time phase variation associated with the 
-detected hearbeat frequency is also computed. This allows for the heartbeat 
-frequency to be exaggerated in the post-process frame rendering, causing the 
-highlighted forhead location to pulse in sync with the user's own heartbeat.
+Once the user's hear rate has been estimated, real-time phase variation associated with this 
+frequency is also computed. This allows for the heartbeat to be exaggerated in the post-process frame rendering, 
+causing the highlighted forhead location to pulse in sync with the user's own heartbeat.
 
-Support for pulse-detection on multiple simultaneous people in an camera's 
+Support for detection on multiple simultaneous individuals in a single camera's 
 image stream is definitely possible, but at the moment only the information from one face 
-is extracted for analysis
+is extracted for analysis.
 
 The overall dataflow/execution order for the real-time signal processing looks like:
 
 ![Alt text](http://i.imgur.com/xS7O8U3.png "Signal processing")
 
-This signal processing design is implemented in the openMDAO assembly object defined in [lib/processors.py](lib/processors.py).
+This signal processing design is implemented in the openMDAO assembly object defined in
+[lib/processors.py](lib/processors.py).
 
 The definition of each component block used can be found in the source 
 files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and 
@@ -59,18 +59,19 @@ output.
 Requirements:
 ---------------
 
-- Python v2.7+ (http://python.org/)
-- OpenCV v2.4+, with the cv2 python bindings (http://opencv.org/)
+- [Python v2.7+](http://python.org/)
+- [OpenCV v2.4+](http://opencv.org/), with the cv2 python bindings
  
 OpenCV is a powerful open-source computer vision library, with a convenient 
 numpy-compatible interface in the cv2 bindings.
 
-- OpenMDAO v0.5.5+ (http://openmdao.org/)
+- [OpenMDAO v0.5.5+](http://openmdao.org/)
 
 OpenMDAO is an open-source engineering framework that serves as a convenient 
 enviroment to containerize the required real-time analyses, and 
-allow for it to be easily tweaked to specification.
-It requires python 2.6+, numpy, scipy, and matplotlib 
+allow for it to be easily tweaked to specification. Upon installation, it is installed into it's own Python virtualenv,
+which must be activated before use (see below).
+OpenMDAO requires python 2.6+, numpy, scipy, and matplotlib 
 (see http://openmdao.org/docs/getting-started/requirements.html)
 
 Quickstart:
