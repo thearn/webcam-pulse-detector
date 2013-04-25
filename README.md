@@ -26,7 +26,7 @@ A list of other open-source NASA codes can be found at [code.nasa.gov](http://co
 How it works:
 -----------------
 This application uses [OpenCV](http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
-from this location over time to estimate the user's heartbeat frequency. This is done by measuring average optical
+from this location over time to estimate the user's heart rate. This is done by measuring average optical
 intensity in the forehead location, in the subimage's green channel alone (a better color mixing ratio may exist, but the 
 blue channel tends to be very noisy). Physiological data can be estimated this way thanks to the optical absorbtion 
 characteristics of (oxy-) hemoglobin (see http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434). 
