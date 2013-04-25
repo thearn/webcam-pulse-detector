@@ -71,7 +71,7 @@ OpenMDAO is an open-source engineering framework that serves as a convenient
 enviroment to containerize the required real-time analysis, and 
 allow for that analysis to be easily tweaked to specification and compared with alternative designs. 
 Upon installation, OpenMDAO is bootstrapped into its own Python 
-virtualenv, which must be activated before use (see below). OpenMDAO requires python 2.6+, numpy, scipy, and matplotlib 
+virtualenv, which must be activated before use (see the Quickstart section below). OpenMDAO requires python 2.6+, numpy, scipy, and matplotlib 
 (see http://openmdao.org/docs/getting-started/requirements.html)
 
 Quickstart:
