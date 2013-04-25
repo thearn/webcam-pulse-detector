@@ -3,6 +3,10 @@
 *.wpr
 *.wpu
 
+# log files #
+#######
+*openmdao_log.txt
+
 # Directories #
 ###############
 build/
