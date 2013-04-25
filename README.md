@@ -9,7 +9,8 @@ computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windo
 Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
 with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
 pulse detection examples using [Python](http://python.org/) and [OpenCV](http://opencv.org/). 
-Comparable to a few previous efforts in this area (such as https://github.com/mossblaser/HeartMonitor).
+This goal is comparable to those of a few previous efforts in this area 
+(such as https://github.com/mossblaser/HeartMonitor).
 
 Data processing is implemented within an [OpenMDAO](http://openmdao.org/) assembly object to facilitate rapid 
 prototyping/redesign of the real-time analysis, and for simple embedding into a python application.
