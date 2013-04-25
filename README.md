@@ -12,9 +12,6 @@ pulse detection examples using [Python](http://python.org/) and [OpenCV](http://
 This goal is comparable to those of a few previous efforts in this area 
 (such as https://github.com/mossblaser/HeartMonitor).
 
-Data processing is implemented within an [OpenMDAO](http://openmdao.org/) assembly object to facilitate rapid 
-prototyping/redesign of the real-time analysis, and for simple embedding into a python application.
-
 This code was developed at [NASA Glenn Research Center](http://www.nasa.gov/centers/glenn/home/index.html) in 
 support of [OpenMDAO](http://openmdao.org/), under the Aeronautical Sciences Project in NASA's 
 [Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/), as well as the Crew State Monitoring Element 
