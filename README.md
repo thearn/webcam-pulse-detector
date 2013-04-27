@@ -12,7 +12,7 @@ pulse detection examples using [Python](http://python.org/) and [OpenCV](http://
 This goal is comparable to those of a few previous efforts in this area 
 (such as https://github.com/mossblaser/HeartMonitor).
 
-This code was developed at [NASA Glenn Research Center](http://www.nasa.gov/centers/glenn/home/index.html) in 
+This code was developed at [NASA Glenn Research Center](http://www.nasa.gov/centers/glenn) in 
 support of [OpenMDAO](http://openmdao.org/), under the Aeronautical Sciences Project in NASA's 
 [Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/), as well as the Crew State Monitoring Element 
 of the Vehicle Systems Safety Technologies Project, in NASA’s 
