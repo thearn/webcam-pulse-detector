@@ -80,8 +80,15 @@ class cascadeDetection(Component):
         if self.smooth:
             if self.shift(detected[0]) < self.smooth: #regularizes against jitteryness
                 return
-        if self.return_one:
-            self.detected = detected[0:1]
+        if self.return_one:            
+            width = detected[0][2]
+            height = detected[0][3]
+            for i in range(1,len(detected)):
+                if detected[i][2] > width and detected[i][3] > height: 
+                    detected[0] = detected[i]
+                    width = detected[i][2]
+                    height = detected[i][3]
+            self.detected[0] = detected[0]
         else:
             self.detected = detected
             
