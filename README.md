@@ -90,6 +90,13 @@ OpenMDAO\Scripts\activate
 ```
 python get_pulse.py
 ```
+
+- To run on an IP camera, set the `url`, `user`, and `password` strings on line 134 of `get_pulse_ipcam.py`, then run:
+
+```
+python get_pulse_ipcam.py
+```
+
 - If there is an error, try running `test_webcam.py` in the same directory to check if your openCV installation and webcam can be made to work
 with this application.
 
