@@ -3,8 +3,8 @@
 webcam-pulse-detector
 -----------------------
 
-A python code that detects the heart-rate of an individual using their 
-computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
+A python code that detects the heart-rate of an individual using a common webcam or network IP camera. 
+Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
 Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
 with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
@@ -96,6 +96,7 @@ python get_pulse.py
 ```
 python get_pulse_ipcam.py
 ```
+This was tested on a Wowwee Rovio.
 
 - If there is an error, try running `test_webcam.py` in the same directory to check if your openCV installation and webcam can be made to work
 with this application.
