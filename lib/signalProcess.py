@@ -178,7 +178,7 @@ class bandProcess(Component):
             maxidx = np.argmax(self.fft)
             self.peak_hz = self.freqs[maxidx]
             self.phase = np.angle(self.fft_in)[idx][maxidx]
-        except:
+        except ValueError:
             pass #temporary fix for no-data situations
 
 class Cardiac(bandProcess):
