@@ -3,10 +3,9 @@
 *.wpr
 *.wpu
 
-# IDE #
+# log files #
 #######
 *openmdao_log.txt
-
 
 # Directories #
 ###############

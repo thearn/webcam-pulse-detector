@@ -3,7 +3,6 @@ from lib.processors import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey,destroyWindow, moveWindow
 import numpy as np      
 
-
 class getPulseApp(object):
     """
     Python application that finds a face in a webcam stream, then isolates the
@@ -17,7 +16,7 @@ class getPulseApp(object):
         #stream)
         self.camera = Camera(camera=0) #first camera by default
         self.w,self.h = 0,0
-        
+        self.pressed = 0
         #Containerized analysis of recieved image frames (an openMDAO assembly)
         #is defined next.
         
@@ -90,11 +89,13 @@ class getPulseApp(object):
         A plotting or camera frame window must have focus for keypresses to be
         detected.
         """
-        pressed = waitKey(10) & 255 #wait for keypress for 10 ms
-        if pressed == 27: #exit program on 'esc'
-            quit()
+        self.pressed = waitKey(10) & 255 #wait for keypress for 10 ms
+        if self.pressed == 27: #exit program on 'esc'
+			print "exiting..."
+			self.camera.cam.release()
+			exit()
         for key in self.key_controls.keys():
-            if chr(pressed) == key:
+            if chr(self.pressed) == key:
                 self.key_controls[key]()
                 
     def main_loop(self):
@@ -128,6 +129,4 @@ class getPulseApp(object):
 if __name__ == "__main__":
     App = getPulseApp()
     while True:
-        App.main_loop()
-        
-        
+		App.main_loop()
