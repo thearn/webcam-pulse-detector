@@ -29,3 +29,6 @@ class Camera(object):
     def get_frame(self):
         _,frame = self.cam.read()
         return frame
+
+    def release(self):
+        self.cam.release()

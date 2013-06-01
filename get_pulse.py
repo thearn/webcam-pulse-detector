@@ -92,6 +92,7 @@ class getPulseApp(object):
         """
         pressed = waitKey(10) & 255 #wait for keypress for 10 ms
         if pressed == 27: #exit program on 'esc'
+            self.camera.release()
             quit()
         for key in self.key_controls.keys():
             if chr(pressed) == key:
