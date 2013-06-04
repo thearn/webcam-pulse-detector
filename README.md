@@ -32,7 +32,7 @@ With good lighting and minimal noise due to motion, a stable heartbeat should be
 isolated in about 15 seconds. Other physiological waveforms (such as 
 [Mayer waves](http://en.wikipedia.org/wiki/Mayer_waves)) should also be visible in the raw data stream.
 
-Once the user's hear rate has been estimated, real-time phase variation associated with this 
+Once the user's heart rate has been estimated, real-time phase variation associated with this 
 frequency is also computed. This allows for the heartbeat to be exaggerated in the post-process frame rendering, 
 causing the highlighted forehead location to pulse in sync with the user's own heartbeat.
 
