@@ -16,9 +16,9 @@ file anywhere you'd like, then run the file using python. The best way to do thi
 open a windows command prompt in the same directory as the "go-openmdao.py" file, then
 run it by typing:
 
-`python go-openmdao.py`
+  `python go-openmdao.py`
 
-in the prompt, and pressing enter. It'll build a bunch of things into a folder in the same directory that will be named something like "openmdao-0.6.2".
+  in the prompt, and pressing enter. It'll build a bunch of things into a folder in the same directory that will be named something like "openmdao-0.6.2".
 
 - Then, download the webcam pulse detector code from https://github.com/thearn/webcam-pulse-detector/archive/master.zip
 
