@@ -72,6 +72,9 @@ Upon installation, OpenMDAO is bootstrapped into its own Python
 virtualenv, which must be activated before use (see the Quickstart section below). OpenMDAO requires python 2.6+, numpy, scipy, and matplotlib 
 (see http://openmdao.org/docs/getting-started/requirements.html)
 
+Running Windows, and completely new to Python? Full instructions for getting started with all requirements needed to
+run this code are available [here](win_pythonxy.md)
+
 Quickstart:
 ------------
 - Activate the openMDAO virtual python environment in a command or terminal window. On Linux and OSX, this is done by
