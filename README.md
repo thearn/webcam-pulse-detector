@@ -78,7 +78,7 @@ run this code are available [here](win_pythonxy.md)
 Quickstart:
 ------------
 - Activate the openMDAO virtual python environment in a command or terminal window. On Linux and OSX, this is done by
-running:
+running (note the period):
 
 ```
 . OpenMDAO/bin/activate
