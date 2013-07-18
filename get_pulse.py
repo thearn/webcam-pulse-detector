@@ -52,7 +52,7 @@ class getPulseApp(object):
                          self.processor.fft.samples]).T
         np.savetxt(fn, data, delimiter=',')
         
-
+    
 
     def toggle_search(self):
         """
