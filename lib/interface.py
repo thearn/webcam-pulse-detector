@@ -112,7 +112,7 @@ def plotXY(data,size = (280,640),margin = 25,name = "data",labels=[], skip = [],
             pts = np.array([[x_, y_] for x_, y_ in zip(xx,yy)],np.int32)
             i+=1
             P.append(pts)
-        except:
+        except ValueError:
             pass #temporary
     """ 
     #Polylines seems to have some trouble rendering multiple polys for some people
