@@ -2,6 +2,7 @@ from lib.device import Camera
 from lib.processors import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey,destroyWindow, moveWindow
 import numpy as np      
+import datetime
 
 class getPulseApp(object):
     """
@@ -37,7 +38,20 @@ class getPulseApp(object):
         #Maps keystrokes to specified methods
         #(A GUI window must have focus for these to work)
         self.key_controls = {"s" : self.toggle_search,
-                             "d" : self.toggle_display_plot}
+                             "d" : self.toggle_display_plot,
+                             "f" : self.write_csv}
+        
+    def write_csv(self):
+        """
+        Writes current data to a csv file
+        """
+        bpm = " " + str(int(self.processor.measure_heart.bpm))
+        fn = str(datetime.datetime.now()).split(".")[0] + bpm + " BPM.csv"
+        
+        data = np.array([self.processor.fft.times, 
+                         self.processor.fft.samples]).T
+        np.savetxt(fn, data, delimiter=',')
+        
 
 
     def toggle_search(self):
