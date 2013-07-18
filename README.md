@@ -3,12 +3,13 @@
 webcam-pulse-detector
 -----------------------
 
-A python code that detects the heart-rate of an individual using their 
-computer's webcam. Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
+A python code that detects the heart-rate of an individual using a common webcam or network IP camera. 
+Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
 Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
 with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
-pulse detection examples using [Python](http://python.org/) and [OpenCV](http://opencv.org/). 
+pulse detection examples using [Python](http://python.org/) and [OpenCV](http://opencv.org/) (see https://github.com/brycedrennan/eulerian-magnification for a 
+more general take on the offline post-processing methodology). 
 This goal is comparable to those of a few previous efforts in this area 
 (such as https://github.com/mossblaser/HeartMonitor).
 
@@ -25,16 +26,16 @@ How it works:
 This application uses [OpenCV](http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
 from this location over time to estimate the user's heart rate. This is done by measuring average optical
 intensity in the forehead location, in the subimage's green channel alone (a better color mixing ratio may exist, but the 
-blue channel tends to be very noisy). Physiological data can be estimated this way thanks to the optical absorbtion 
-characteristics of (oxy-) hemoglobin (see http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434). 
+blue channel tends to be very noisy). Physiological data can be estimated this way thanks to the optical absorption 
+characteristics of (oxy-) haemoglobin (see http://www.opticsinfobase.org/oe/abstract.cfm?uri=oe-16-26-21434). 
 
 With good lighting and minimal noise due to motion, a stable heartbeat should be 
 isolated in about 15 seconds. Other physiological waveforms (such as 
 [Mayer waves](http://en.wikipedia.org/wiki/Mayer_waves)) should also be visible in the raw data stream.
 
-Once the user's hear rate has been estimated, real-time phase variation associated with this 
+Once the user's heart rate has been estimated, real-time phase variation associated with this 
 frequency is also computed. This allows for the heartbeat to be exaggerated in the post-process frame rendering, 
-causing the highlighted forhead location to pulse in sync with the user's own heartbeat.
+causing the highlighted forehead location to pulse in sync with the user's own heartbeat.
 
 Support for detection on multiple simultaneous individuals in a single camera's 
 image stream is definitely possible, but at the moment only the information from one face 
@@ -65,16 +66,19 @@ numpy-compatible interface in the cv2 bindings.
 - [OpenMDAO v0.5.5+](http://openmdao.org/)
 
 OpenMDAO is an open-source engineering framework that serves as a convenient 
-enviroment to containerize the required real-time analysis, and 
+environment to containerize the required real-time analysis, and 
 allow for that analysis to be easily tweaked to specification and compared with alternative designs. 
 Upon installation, OpenMDAO is bootstrapped into its own Python 
 virtualenv, which must be activated before use (see the Quickstart section below). OpenMDAO requires python 2.6+, numpy, scipy, and matplotlib 
 (see http://openmdao.org/docs/getting-started/requirements.html)
 
+Running Windows, and completely new to Python? Full instructions for getting started with all requirements needed to
+run this code are available [here](win_pythonxy.md)
+
 Quickstart:
 ------------
 - Activate the openMDAO virtual python environment in a command or terminal window. On Linux and OSX, this is done by
-running:
+running (note the period):
 
 ```
 . OpenMDAO/bin/activate
@@ -90,6 +94,14 @@ OpenMDAO\Scripts\activate
 ```
 python get_pulse.py
 ```
+
+- To run on an IP camera, set the `url`, `user`, and `password` strings on line 134 of `get_pulse_ipcam.py`, then run:
+
+```
+python get_pulse_ipcam.py
+```
+This was tested on a Wowwee Rovio.
+
 - If there is an error, try running `test_webcam.py` in the same directory to check if your openCV installation and webcam can be made to work
 with this application.
 
@@ -98,7 +110,7 @@ Usage notes:
 - When run, a window will open showing a stream from your computer's webcam
 - When a forehead location has been isolated, the user should press "S" on their 
 keyboard to lock this location, and remain as still as possible (the camera 
-stream window must have focus for the click to register). This freezes the aquisition location in place. This lock can
+stream window must have focus for the click to register). This freezes the acquisition location in place. This lock can
 be released by pressing "S" again.
 - To view a stream of the measured data as it is gathered, press "D". To hide this display, press "D" again.
 - The data display shows three data traces, from top to bottom: 

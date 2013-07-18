@@ -131,7 +131,8 @@ class getPulseApp(object):
         self.key_handler()
 
 if __name__ == "__main__":
-    url = "http://1.1.1.1/Jpeg/CamImg0000.jpg"
+    # example (replace these values)
+    url = "http://1.1.1.1/frame.jpg"
     user = "admin"
     password = "12345"
     App = getPulseApp(url,

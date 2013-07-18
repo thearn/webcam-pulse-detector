@@ -103,11 +103,13 @@ class getPulseApp(object):
         A plotting or camera frame window must have focus for keypresses to be
         detected.
         """
+
         self.pressed = waitKey(10) & 255 #wait for keypress for 10 ms
         if self.pressed == 27: #exit program on 'esc'
             print "exiting..."
             self.camera.cam.release()
             exit()
+
         for key in self.key_controls.keys():
             if chr(self.pressed) == key:
                 self.key_controls[key]()
