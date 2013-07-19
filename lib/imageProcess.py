@@ -1,6 +1,7 @@
 from openmdao.lib.datatypes.api import Float, Dict, Array, List, Int, Bool
 from openmdao.main.api import Component, Assembly
 import numpy as np
+import time
 import cv2
 
 """
@@ -104,8 +105,10 @@ class showBPMtext(Component):
         super(showBPMtext,self).__init__()
         self.add("frame_in", Array(iotype="in"))
         self.add("frame_out", Array(iotype="out"))
+        self.bpms = []
     
     def execute(self):
+        self.bpms.append([time.time(), self.bpm])
         if self.ready:
             col = (0,255,0)
             text = "%0.1f bpm" % self.bpm
@@ -118,3 +121,4 @@ class showBPMtext(Component):
         cv2.putText(self.frame_in,text,
                     (self.x,self.y),cv2.FONT_HERSHEY_PLAIN,tsize,col)
         self.frame_out = self.frame_in
+        

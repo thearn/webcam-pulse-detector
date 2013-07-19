@@ -2,7 +2,6 @@ from lib.device import Camera
 from lib.processors import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey,destroyWindow, moveWindow
 import numpy as np      
-import datetime
 
 class getPulseApp(object):
     """
@@ -28,13 +27,14 @@ class getPulseApp(object):
         #Basically, everything that isn't communication
         #to the camera device or part of the GUI
         self.processor = findFaceGetPulse(bpm_limits = [50,160],
-                                          data_spike_limit = 25.,
+                                          data_spike_limit = 2500.,
                                           face_detector_smoothness = 10.)  
 
         #Init parameters for the cardiac data plot
         self.bpm_plot = False
         self.plot_title = "Cardiac info - raw signal, filtered signal, and PSD"
-
+        
+        
         #Maps keystrokes to specified methods
         #(A GUI window must have focus for these to work)
         self.key_controls = {"s" : self.toggle_search,
@@ -45,14 +45,11 @@ class getPulseApp(object):
         """
         Writes current data to a csv file
         """
-        bpm = " " + str(int(self.processor.measure_heart.bpm))
-        fn = str(datetime.datetime.now()).split(".")[0] + bpm + " BPM.csv"
+        data = np.array(self.processor.show_bpm_text.bpms)
+        np.savetxt("Webcam-pulse.csv", data, delimiter=',')
+        print "Writing csv, clearing buffer, starting new collection"
+        self.processor.show_bpm_text.bpms = []
         
-        data = np.array([self.processor.fft.times, 
-                         self.processor.fft.samples]).T
-        np.savetxt(fn, data, delimiter=',')
-        
-    
 
     def toggle_search(self):
         """
@@ -121,7 +118,6 @@ class getPulseApp(object):
         # Get current image frame from the camera
         frame = self.camera.get_frame()
         self.h,self.w,_c = frame.shape
-        
 
         #display unaltered frame
         #imshow("Original",frame)
