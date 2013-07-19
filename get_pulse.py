@@ -2,6 +2,7 @@ from lib.device import Camera
 from lib.processors import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey,destroyWindow, moveWindow
 import numpy as np      
+import datetime
 
 class getPulseApp(object):
     """
@@ -45,8 +46,9 @@ class getPulseApp(object):
         """
         Writes current data to a csv file
         """
+        fn = "Webcam-pulse" + str(datetime.datetime.now()) + ".csv"
         data = np.array(self.processor.show_bpm_text.bpms)
-        np.savetxt("Webcam-pulse.csv", data, delimiter=',')
+        np.savetxt(fn, data, delimiter=',')
         print "Writing csv, clearing buffer, starting new collection"
         self.processor.show_bpm_text.bpms = []
         
