@@ -46,9 +46,10 @@ class getPulseApp(object):
         """
         Writes current data to a csv file
         """
-        fn = "Webcam-pulse" + str(datetime.datetime.now()) + ".csv"
+        fn = "Webcam-pulse" + str(datetime.datetime.now())
+        fn = fn.replace(":", "_").replace(".", "_")
         data = np.array(self.processor.show_bpm_text.bpms)
-        np.savetxt(fn, data, delimiter=',')
+        np.savetxt(fn  + ".csv", data, delimiter=',')
         print "Writing csv, clearing buffer, starting new collection"
         self.processor.show_bpm_text.bpms = []
         
