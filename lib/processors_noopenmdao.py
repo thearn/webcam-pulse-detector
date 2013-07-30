@@ -53,12 +53,12 @@ class findFaceGetPulse(object):
     
     def get_subface_means(self, coord):
         x, y, w, h = coord
-        subframe = self.frame_in[x:x+w,y:y+h,:]
-        #v1 = np.mean(subframe[:,:,0])
-        #v2 = np.mean(subframe[:,:,1])
+        subframe = self.frame_in[y:y+h,x:x+w,:]
+        v1 = np.mean(subframe[:,:,0])
+        v2 = np.mean(subframe[:,:,1])
         
-        v1 = np.std(subframe[:,:,0])
-        v2 = np.std(subframe[:,:,1])
+        #v1 = np.std(subframe[:,:,0])
+        #v2 = np.std(subframe[:,:,1])
         
         #print v1,v2
         return v1, v2
@@ -89,7 +89,8 @@ class findFaceGetPulse(object):
     def run(self):
         self.times.append(time.time() - self.t0)
         self.frame_out = self.frame_in
-        self.gray = cv2.cvtColor(self.frame_in, cv2.COLOR_BGR2GRAY)
+        self.gray = cv2.equalizeHist(cv2.cvtColor(self.frame_in, 
+                                                  cv2.COLOR_BGR2GRAY))
         
         if self.find_faces:
             detected = list(self.face_cascade.detectMultiScale(self.gray, 
@@ -132,6 +133,7 @@ class findFaceGetPulse(object):
             processed = np.array(self.data_buffer)
             
             inp = (processed  - np.mean(processed , 0))/np.std(processed, axis=0, ddof=0)
+            #inp = processed
             
             if self.idx % self.buffer_size == 0:
                 self.trained = False
