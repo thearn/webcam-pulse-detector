@@ -1,5 +1,5 @@
 from lib.device import Camera
-from lib.processors import findFaceGetPulse
+from lib.processors_noopenmdao import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey,destroyWindow, moveWindow
 import numpy as np      
 import datetime
@@ -39,7 +39,7 @@ class getPulseApp(object):
         #Maps keystrokes to specified methods
         #(A GUI window must have focus for these to work)
         self.key_controls = {"s" : self.toggle_search,
-                             "d" : self.toggle_display_plot,
+                             "d" : self.make_bpm_plot,
                              "f" : self.write_csv}
         
     def write_csv(self):
@@ -48,10 +48,9 @@ class getPulseApp(object):
         """
         fn = "Webcam-pulse" + str(datetime.datetime.now())
         fn = fn.replace(":", "_").replace(".", "_")
-        data = np.array(self.processor.show_bpm_text.bpms)
+        data = np.vstack((60*self.processor.freqs, self.processor.fft))
         np.savetxt(fn  + ".csv", data, delimiter=',')
-        print "Writing csv, clearing buffer, starting new collection"
-        self.processor.show_bpm_text.bpms = []
+        print "Writing csv"
         
 
     def toggle_search(self):
@@ -61,40 +60,15 @@ class getPulseApp(object):
         Locking the forehead location in place significantly improves
         data quality, once a forehead has been sucessfully isolated. 
         """
-        state = self.processor.find_faces.toggle()
+        #state = self.processor.find_faces.toggle()
+        state = self.processor.find_faces_toggle()
         print "face detection lock =",not state
-
-    def toggle_display_plot(self):
-        """
-        Toggles the data display.
-        """
-        if self.bpm_plot:
-            print "bpm plot disabled"
-            self.bpm_plot = False
-            destroyWindow(self.plot_title)
-        else:
-            print "bpm plot enabled"
-            self.bpm_plot = True
-            self.make_bpm_plot()
-            moveWindow(self.plot_title, self.w,0)
 
     def make_bpm_plot(self):
         """
         Creates and/or updates the data display
         """
-        plotXY([[self.processor.fft.times, 
-                 self.processor.fft.samples],
-                [self.processor.fft.even_times[4:-4], 
-                 self.processor.measure_heart.filtered[4:-4]],
-                [self.processor.measure_heart.freqs, 
-                 self.processor.measure_heart.fft]], 
-               labels = [False, False, True],
-               showmax = [False,False, "bpm"], 
-               label_ndigits = [0,0,0],
-               showmax_digits = [0,0,1],
-               skip = [3,3,4],
-               name = self.plot_title, 
-               bg = self.processor.grab_faces.slices[0])
+        self.processor.plot()
 
     def key_handler(self):    
         """
