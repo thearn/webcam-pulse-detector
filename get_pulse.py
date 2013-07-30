@@ -40,7 +40,11 @@ class getPulseApp(object):
         #(A GUI window must have focus for these to work)
         self.key_controls = {"s" : self.toggle_search,
                              "d" : self.make_bpm_plot,
-                             "f" : self.write_csv}
+                             "f" : self.write_csv,
+                             "t": self.train}
+        
+    def train(self):
+        print "pca/ica train", self.processor.train()
         
     def write_csv(self):
         """
