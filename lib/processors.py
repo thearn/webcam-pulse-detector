@@ -157,7 +157,8 @@ class findFaceGetPulse(Assembly):
         #Should probably be an intermediate component here, but that isn't 
         #actually necessary - we can do a connection between expressions in
         #addition to input/output variables.
-        self.connect("grab_foreheads.slices[0].mean()", "fft.data_in")
+        #self.connect("grab_foreheads.slices[0]", "fft.data_in")
+        self.connect("grab_foreheads.zero_mean", "fft.data_in")
         
         #Send the FFT outputs (the fft & associated freqs in hz) to the cardiac
         #data estimator

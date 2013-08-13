@@ -62,6 +62,8 @@ class getPulseApp(object):
         data quality, once a forehead has been sucessfully isolated. 
         """
         state = self.processor.find_faces.toggle()
+        if not state:
+        	self.processor.fft.reset()
         print "face detection lock =",not state
 
     def toggle_display_plot(self):

@@ -85,6 +85,8 @@ class frameSlices(Component):
         self.add("rects_in", Array(iotype="in"))
         self.add("slices", List([ np.array([0,0]) ],iotype="out"))
         self.add("combined", Array(iotype="out"))
+
+        self.add("zero_mean", Float(0., iotype="out"))
         
         self.channels = channels
         
@@ -117,6 +119,7 @@ class frameSlices(Component):
                 
                 comb = self.combine(output, comb)
         self.combined = comb
+        self.zero_mean = self.slices[0].mean()
         
 
         
