@@ -117,6 +117,9 @@ class faceDetector(cascadeDetection):
         
 
     def get_foreheads(self):
+        """
+        defines forehead location using offsets & multiplicative scalings
+        """
         fh_x = 0.5  
         fh_y = 0.18
         fh_w = 0.25

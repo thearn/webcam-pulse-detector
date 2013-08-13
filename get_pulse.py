@@ -28,7 +28,7 @@ class getPulseApp(object):
         #Basically, everything that isn't communication
         #to the camera device or part of the GUI
         self.processor = findFaceGetPulse(bpm_limits = [50,160],
-                                          data_spike_limit = 25.,
+                                          data_spike_limit = 2500.,
                                           face_detector_smoothness = 10.)  
 
         #Init parameters for the cardiac data plot
