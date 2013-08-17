@@ -102,6 +102,7 @@ class BufferFFT(Component):
         interpolated = np.interp(self.even_times, self.times, self.samples)
         interpolated = np.hamming(n) * interpolated
         self.interpolated = interpolated
+        interpolated = interpolated - np.mean(interpolated)
         # Perform the FFT
         fft = np.fft.rfft(interpolated)
         self.freqs = float(self.fps)/n*np.arange(n/2 + 1)
