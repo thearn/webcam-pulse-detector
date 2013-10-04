@@ -19,7 +19,7 @@ support of [OpenMDAO](http://openmdao.org/), under the Aeronautical Sciences Pro
 of the Vehicle Systems Safety Technologies Project, in NASA’s 
 [Aviation Safety Program](http://www.aeronautics.nasa.gov/programs_avsafe.htm).
 
-A list of other open-source NASA codes can be found at [code.nasa.gov](http://code.nasa.gov/project/).
+A list of other open-source NASA codes can be found at [code.nasa.gov](http://code.nasa.gov/project/)
 
 How it works:
 -----------------
