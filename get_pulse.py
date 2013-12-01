@@ -6,7 +6,7 @@ import argparse
 import numpy as np
 import datetime
 from serial import Serial
-
+import socket
 
 class getPulseApp(object):
 
@@ -24,6 +24,7 @@ class getPulseApp(object):
         serial = args.serial
         baud = args.baud
         self.send_serial = False
+        self.send_udp = False
         if serial:
             self.send_serial = True
             if not baud:
@@ -32,7 +33,18 @@ class getPulseApp(object):
                 baud = int(baud)
             self.serial = Serial(port=serial, baudrate=baud)
 
-        self.udp = args.udp
+        udp = args.udp
+        if udp:
+            self.send_udp = True
+            if ":" not in udp:
+                ip = udp
+                port = 5005
+            else:
+                ip, port = udp.split(":")
+                port = int(port)
+            self.udp = (ip, port)
+            self.sock = socket.socket(socket.AF_INET, # Internet
+                 socket.SOCK_DGRAM) # UDP
 
         self.cameras = []
         self.selected_cam = 0
@@ -178,6 +190,9 @@ class getPulseApp(object):
 
         if self.send_serial:
             self.serial.write(str(self.processor.bpm) + "\r\n")
+
+        if self.send_udp:
+            self.sock.sendto(str(self.processor.bpm), self.udp)
 
         # handle any key presses
         self.key_handler()
