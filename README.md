@@ -3,12 +3,12 @@
 webcam-pulse-detector
 -----------------------
 
-UPDATE: Stand-alone no-dependancy precompiled application now available!
+UPDATE: Stand-alone (no dependancy) precompiled application now available!
  - Download for Mac OSX 10.6 (and later): [get_pulse_osx.zip](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse_osx.zip/download)
  - Download for 64-bit Windows 7 and 8: [get_pulse.exe](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse.exe/download)
  - Debian/Ubuntu/Mint Linux (Coming very soon)
 
-This code can also be run from source by [following the instructions below](#requirements-for-running-from-source).
+This code can also be run from source by [following the instructions below](#running-from-source).
  
 -------------------
 
@@ -27,8 +27,6 @@ support of [OpenMDAO](http://openmdao.org/), under the Aeronautical Sciences Pro
 [Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/), as well as the Crew State Monitoring Element 
 of the Vehicle Systems Safety Technologies Project, in NASA’s 
 [Aviation Safety Program](http://www.aeronautics.nasa.gov/programs_avsafe.htm).
-
-A list of other open-source NASA codes can be found at [code.nasa.gov](http://code.nasa.gov/project/)
 
 How it works:
 -----------------
@@ -139,21 +137,16 @@ with this application.
 Usage notes:
 ----------
 - When run, a window will open showing a stream from your computer's webcam
-- When a forehead location has been isolated, the user should press "S" on their 
+- When a forehead location has been correctly detected and isolated, the user should press "S" on their 
 keyboard to lock this location, and remain as still as possible (the camera 
 stream window must have focus for the click to register). This freezes the acquisition location in place. This lock can
 be released by pressing "S" again.
 - To view a stream of the measured data as it is gathered, press "D". To hide this display, press "D" again.
 - The data display shows three data traces, from top to bottom: 
-   1. raw optical intensity
-   2. extracted heartbeat signal
-   3. Power spectral density, with local maxima indicating the heartrate (in beats per minute). 
+   1. (top) raw optical intensity
+   2. (bottom) Power spectral density, with local maxima indicating the heartrate (in beats per minute). 
 - With consistent lighting and minimal head motion, a stable heartbeat should be 
-isolated in about 15 to 20 seconds. A count-down is shown in the image frame.
-- If a large spike in optical intensity is measured in the data (due to motion 
-noise, sudden change in lighting, etc) the data collection process is reset and 
-started over. The sensitivity of this feature can be tweaked by changing `data_spike_limit` on line 31 of [get_pulse.py](get_pulse.py).
-Other mutable parameters of the analysis can be changed here as well.
+isolated in about 15 seconds. A count-down is shown in the image frame.
 
 TODO:
 ------
@@ -164,5 +157,5 @@ alone). If so, the mixing ratios might be determinable from the forward projecti
 computed on a set of mean value R,G, and B data gathered over a trial data set (and verified with different individuals 
 under different lighting conditions).
 - Support for multiple individuals
-- Smoother tracking of data from foreheads, perhaps by buffering and registering/inverse-transforming image subframes
+- Smoother tracking of data from foreheads, perhaps by buffering and registering or inverse-transforming image subframes
 
