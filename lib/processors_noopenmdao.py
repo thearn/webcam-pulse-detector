@@ -114,7 +114,7 @@ class findFaceGetPulse(object):
         pylab.savefig("data_fft.png")
         quit()
 
-    def run(self):
+    def run(self, cam):
         self.times.append(time.time() - self.t0)
         self.frame_out = self.frame_in
         self.gray = cv2.equalizeHist(cv2.cvtColor(self.frame_in,
@@ -122,10 +122,13 @@ class findFaceGetPulse(object):
         col = (100, 255, 100)
         if self.find_faces:
             cv2.putText(
+                self.frame_out, "Press 'C' to change camera (current: %s)" % str(cam),
+                       (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
+            cv2.putText(
                 self.frame_out, "Press 'S' to lock face and begin",
-                       (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
+                       (10, 50), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
             cv2.putText(self.frame_out, "Press 'Esc' to quit",
-                       (10, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
+                       (10, 75), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
             self.data_buffer, self.times, self.trained = [], [], False
             detected = list(self.face_cascade.detectMultiScale(self.gray,
                                                                scaleFactor=1.3,
@@ -151,14 +154,16 @@ class findFaceGetPulse(object):
             return
         if set(self.face_rect) == set([1, 1, 2, 2]):
             return
-
+        cv2.putText(
+            self.frame_out, "Press 'C' to change camera (current: %s)" % str(cam),
+                   (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
         cv2.putText(
             self.frame_out, "Press 'S' to restart",
-                   (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
-        cv2.putText(self.frame_out, "Press 'D' to toggle data plot",
                    (10, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
-        cv2.putText(self.frame_out, "Press 'Esc' to quit",
+        cv2.putText(self.frame_out, "Press 'D' to toggle data plot",
                    (10, 75), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
+        cv2.putText(self.frame_out, "Press 'Esc' to quit",
+                   (10, 100), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
 
         forehead1 = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
         self.draw_rect(forehead1)

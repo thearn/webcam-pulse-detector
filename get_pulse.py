@@ -20,7 +20,14 @@ class getPulseApp(object):
     def __init__(self):
         # Imaging device - must be a connected camera (not an ip camera or mjpeg
         # stream)
-        self.camera = Camera(camera=0)  # first camera by default
+        self.cameras = []
+        self.selected_cam = 0
+        for i in xrange(3):
+            camera = Camera(camera=i)  # first camera by default
+            if camera.valid or not len(self.cameras):
+                self.cameras.append(camera)
+            else:
+                break
         self.w, self.h = 0, 0
         self.pressed = 0
         # Containerized analysis of recieved image frames (an openMDAO assembly)
@@ -44,11 +51,15 @@ class getPulseApp(object):
         #(A GUI window must have focus for these to work)
         self.key_controls = {"s": self.toggle_search,
                              "d": self.toggle_display_plot,
-                             "f": self.write_csv,
-                             "t": self.train}
+                             "c": self.toggle_cam,
+                             "f": self.write_csv}
 
-    def train(self):
-        print "pca/ica train", self.processor.train()
+    def toggle_cam(self):
+        self.processor.find_faces = True
+        self.bpm_plot = False
+        destroyWindow(self.plot_title)
+        self.selected_cam +=1
+        self.selected_cam = self.selected_cam % 3
 
     def write_csv(self):
         """
@@ -113,8 +124,9 @@ class getPulseApp(object):
 
         self.pressed = waitKey(10) & 255  # wait for keypress for 10 ms
         if self.pressed == 27:  # exit program on 'esc'
-            print "exiting..."
-            self.camera.cam.release()
+            print "Exiting"
+            for cam in self.cameras:
+                cam.cam.release()
             exit()
 
         for key in self.key_controls.keys():
@@ -126,7 +138,7 @@ class getPulseApp(object):
         Single iteration of the application's main loop.
         """
         # Get current image frame from the camera
-        frame = self.camera.get_frame()
+        frame = self.cameras[self.selected_cam].get_frame()
         self.h, self.w, _c = frame.shape
 
         # display unaltered frame
@@ -135,7 +147,7 @@ class getPulseApp(object):
         # set current image frame to the processor's input
         self.processor.frame_in = frame
         # process the image frame to perform all needed analysis
-        self.processor.run()
+        self.processor.run(self.selected_cam)
         # collect the output frame for display
         output_frame = self.processor.frame_out
 
