@@ -10,7 +10,8 @@ UPDATE: Stand-alone (no dependancy) precompiled application now available!
  - Download for Mac OSX 10.6 (and later): [webcam-pulse-detector_mac.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_mac.zip/download) (21 Mb)
  - Debian/Ubuntu/Mint Linux: Coming very soon. For now, it is recommended that you run from source on the `no_openmdao` branch if you just want to test things out.
 
-This code can be run from source by [following the instructions below](#running-from-source).
+The application can be run by simply executing the binary contained in the zip file for your platform.
+This code can also be run from source by [following the instructions below](#running-from-source).
  
 -------------------
 
