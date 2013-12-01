@@ -7,8 +7,8 @@ UPDATE: Stand-alone no-dependancy precompiled application now available!
  - Download for Mac OSX 10.6 (and later): [get_pulse_osx.zip](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse_osx.zip/download)
  - Download for 64-bit Windows 7 and 8: [get_pulse.exe](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse.exe/download)
  - Debian/Ubuntu/Mint Linux (Coming very soon)
- 
-This code can also be run from source by following the instructions below.
+
+This code can also be run from source by [following the instructions below](#requirements-for-running-from-source).
  
 -------------------
 
@@ -54,7 +54,7 @@ The overall dataflow/execution order for the real-time signal processing looks l
 
 ![Alt text](http://i.imgur.com/xS7O8U3.png "Signal processing")
 
-This signal processing design is implemented in the openMDAO assembly object defined in
+This signal processing design is implemented in the OpenMDAO assembly object defined in
 [lib/processors.py](lib/processors.py).
 
 The definition of each component block used can be found in the source 
@@ -63,16 +63,31 @@ files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/sig
 output.
 
 
-Requirements for running from source:
+Running from source:
 ---------------
 
+### Basic requirements: 
+
 - [Python v2.7+](http://python.org/)
+- Numpy and Scipy 
+- Pyserial (for serial port output support)
 - [OpenCV v2.4+](http://opencv.org/), with the cv2 python bindings
  
 OpenCV is a powerful open-source computer vision library, with a convenient 
 numpy-compatible interface in the cv2 bindings.
 
-- [OpenMDAO v0.5.5+](http://openmdao.org/)
+**If you want to run from source and modify UI or data output behavior, and make only minor changes 
+to the signal processing, you can checkout and run the `no_openmdao` branch with no further dependancies.**
+This branch implements a 'flattened' version of the master branch's OpenMDAO assembly, but as a plain python object.
+
+Both the `no_openmdao` branch and the precompiled binary applications contain support for real time serial port and UDP output of the estimated heart rate.
+
+However, if you would like to make significant or exploratory changes to the signal processing code (eg. multichannel support, PCA/ICA data factorizations, better filters, etc.), you should run the master
+branch with OpenMDAO support and build on what is already there (see instructions below).
+
+### Requirements for master branch (OpenMDAO support):
+
+- [OpenMDAO v0.9+](http://openmdao.org/)
 
 OpenMDAO is an open-source engineering framework that serves as a convenient 
 environment to containerize the required real-time analysis, and 
@@ -81,11 +96,18 @@ Upon installation, OpenMDAO is bootstrapped into its own Python
 virtualenv, which must be activated before use (see the Quickstart section below). OpenMDAO requires python 2.6+, numpy, scipy, and matplotlib 
 (see http://openmdao.org/docs/getting-started/requirements.html)
 
-Running Windows, and completely new to Python? Full instructions for getting started with all requirements needed to
+Running Windows, completely new to Python, but still would like to hack on the source code? Full instructions for getting started with all requirements needed to
 run this code are available [here](win_pythonxy.md)
 
 Quickstart:
 ------------
+
+### On branch `no_openmdao`:
+
+- Simply run `get_pulse.py` in the top level directory.
+
+### On branch `master`:
+
 - Activate the openMDAO virtual python environment in a command or terminal window. On Linux and OSX, this is done by
 running (note the period):
 
