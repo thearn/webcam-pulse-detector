@@ -11,10 +11,10 @@ exe = EXE(pyz,
           a.scripts,
           exclude_binaries=True,
           name='get_pulse.exe',
-          debug=False,
+          debug=True,
           strip=None,
           upx=True,
-          console=False )
+          console=True )
 coll = COLLECT(exe,
                a.binaries,
                a.zipfiles,
