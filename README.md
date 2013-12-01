@@ -3,6 +3,8 @@
 webcam-pulse-detector
 -----------------------
 
+-------------------
+
 UPDATE: Stand-alone (no dependancy) precompiled application now available!
  - Download for Windows 7 and 8: [webcam-pulse-detector_win.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_win.zip/download) (42 Mb) 
  - Download for Mac OSX 10.6 (and later): [webcam-pulse-detector_mac.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_mac.zip/download) (21 Mb)
