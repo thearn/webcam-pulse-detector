@@ -7,6 +7,7 @@ import numpy as np
 import datetime
 from serial import Serial
 
+
 class getPulseApp(object):
 
     """
@@ -68,11 +69,12 @@ class getPulseApp(object):
                              "f": self.write_csv}
 
     def toggle_cam(self):
-        self.processor.find_faces = True
-        self.bpm_plot = False
-        destroyWindow(self.plot_title)
-        self.selected_cam +=1
-        self.selected_cam = self.selected_cam % len(self.selected_cam)
+        if len(self.cameras) > 1:
+            self.processor.find_faces = True
+            self.bpm_plot = False
+            destroyWindow(self.plot_title)
+            self.selected_cam += 1
+            self.selected_cam = self.selected_cam % len(self.cameras)
 
     def write_csv(self):
         """
@@ -183,11 +185,11 @@ class getPulseApp(object):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Webcam pulse detector.')
     parser.add_argument('--serial', default=None,
-                       help='serial port destination for bpm data')
+                        help='serial port destination for bpm data')
     parser.add_argument('--baud', default=None,
-                       help='Baud rate for serial transmission')
+                        help='Baud rate for serial transmission')
     parser.add_argument('--udp', default=None,
-                       help='udp address:port destination for bpm data')
+                        help='udp address:port destination for bpm data')
 
     args = parser.parse_args()
     App = getPulseApp(args)
