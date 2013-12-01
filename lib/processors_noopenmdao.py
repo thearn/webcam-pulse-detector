@@ -100,7 +100,12 @@ class findFaceGetPulse(object):
         self.frame_out = self.frame_in
         self.gray = cv2.equalizeHist(cv2.cvtColor(self.frame_in,
                                                   cv2.COLOR_BGR2GRAY))
-
+        col = (100, 255, 100)
+        cv2.putText(
+            self.frame_out, "Press 'S' to lock face and begin",
+                   (10, 25), cv2.FONT_HERSHEY_PLAIN, 2, col)
+        cv2.putText(self.frame_out, "Press 'D' to show data plot",
+                   (10, 50), cv2.FONT_HERSHEY_PLAIN, 2, col)
         if self.find_faces:
             self.data_buffer, self.times, self.trained = [], [], False
             detected = list(self.face_cascade.detectMultiScale(self.gray,
@@ -167,7 +172,7 @@ class findFaceGetPulse(object):
             alpha = t
             beta = 1 - t
 
-            self.bpm = 1
+            self.bpm = self.freqs[idx2]
             self.idx += 1
 
             x, y, w, h = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
@@ -179,3 +184,10 @@ class findFaceGetPulse(object):
             self.frame_out[y:y + h, x:x + w] = cv2.merge([r,
                                                           g,
                                                           b])
+
+            col = (100, 255, 100)
+            gap = (self.buffer_size - L) / self.fps
+            text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
+            tsize = 1
+            cv2.putText(self.frame_out, text,
+                       (x, y), cv2.FONT_HERSHEY_PLAIN, tsize, col)
