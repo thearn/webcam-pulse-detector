@@ -7,6 +7,7 @@ import numpy as np
 import datetime
 from serial import Serial
 import socket
+import sys
 
 class getPulseApp(object):
 
@@ -92,12 +93,11 @@ class getPulseApp(object):
         """
         Writes current data to a csv file
         """
-        # fn = "Webcam-pulse" + str(datetime.datetime.now())
-        # fn = fn.replace(":", "_").replace(".", "_")
-        # data = np.vstack((self.processor.ttimes, self.processor.bpms)).T
-        # np.savetxt(fn + ".csv", data, delimiter=',')
-        # print "Writing csv"
-        pass
+        fn = "Webcam-pulse" + str(datetime.datetime.now())
+        fn = fn.replace(":", "_").replace(".", "_")
+        data = np.vstack((self.processor.times, self.processor.samples)).T
+        np.savetxt(fn + ".csv", data, delimiter=',')
+        print "Writing csv"
 
     def toggle_search(self):
         """
@@ -157,7 +157,7 @@ class getPulseApp(object):
                 cam.cam.release()
             if self.send_serial:
                 self.serial.close()
-            exit()
+            sys.exit()
 
         for key in self.key_controls.keys():
             if chr(self.pressed) == key:
