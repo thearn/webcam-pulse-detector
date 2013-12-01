@@ -161,9 +161,6 @@ class findFaceGetPulse(object):
         cv2.putText(self.frame_out, "Press 'Esc' to quit",
                    (10, 75), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
 
-        x, y, w, h = self.face_rect
-        self.slices = [self.gray[y:y + h, x:x + w]]
-
         forehead1 = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
         self.draw_rect(forehead1)
 
@@ -219,7 +216,8 @@ class findFaceGetPulse(object):
             self.frame_out[y:y + h, x:x + w] = cv2.merge([r,
                                                           g,
                                                           b])
-
+            x1, y1, w1, h1 = self.face_rect
+            self.slices = [np.copy(self.frame_out[y1:y1 + h1, x1:x1 + w1, 1])]
             col = (100, 255, 100)
             gap = (self.buffer_size - L) / self.fps
             if gap:

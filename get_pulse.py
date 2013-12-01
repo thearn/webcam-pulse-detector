@@ -1,6 +1,7 @@
 from lib.device import Camera
 from lib.processors_noopenmdao import findFaceGetPulse
-from lib.interface import plotXY, imshow, waitKey, destroyWindow, moveWindow
+from lib.interface import plotXY, imshow, waitKey, destroyWindow
+from cv2 import moveWindow
 
 import numpy as np
 import datetime
@@ -98,7 +99,7 @@ class getPulseApp(object):
                showmax=[False, "bpm"],
                label_ndigits=[0, 0],
                showmax_digits=[0, 1],
-               skip=[3, 4],
+               skip=[3, 3],
                name=self.plot_title,
                bg=self.processor.slices[0])
 
