@@ -6,9 +6,9 @@ webcam-pulse-detector
 UPDATE: Stand-alone (no dependancy) precompiled application now available!
  - Download for Mac OSX 10.6 (and later): [get_pulse_osx.zip](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse_osx.zip/download)
  - Download for 64-bit Windows 7 and 8: [get_pulse.exe](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse.exe/download)
- - Debian/Ubuntu/Mint Linux (Coming very soon)
+ - Debian/Ubuntu/Mint Linux: Coming very soon. For now, it is recommended that you run from source on the `no_openmdao` branch if you just want to test things out.
 
-This code can also be run from source by [following the instructions below](#running-from-source).
+This code can be run from source by [following the instructions below](#running-from-source).
  
 -------------------
 
