@@ -2,10 +2,10 @@ from lib.device import Camera
 from lib.processors_noopenmdao import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey, destroyWindow
 from cv2 import moveWindow
-
+import argparse
 import numpy as np
 import datetime
-
+from serial import Serial
 
 class getPulseApp(object):
 
@@ -17,9 +17,22 @@ class getPulseApp(object):
     over time, and the detected person's pulse is estimated.
     """
 
-    def __init__(self):
+    def __init__(self, args):
         # Imaging device - must be a connected camera (not an ip camera or mjpeg
         # stream)
+        serial = args.serial
+        baud = args.baud
+        self.send_serial = False
+        if serial:
+            self.send_serial = True
+            if not baud:
+                baud = 9600
+            else:
+                baud = int(baud)
+            self.serial = Serial(port=serial, baudrate=baud)
+
+        self.udp = args.udp
+
         self.cameras = []
         self.selected_cam = 0
         for i in xrange(3):
@@ -59,17 +72,18 @@ class getPulseApp(object):
         self.bpm_plot = False
         destroyWindow(self.plot_title)
         self.selected_cam +=1
-        self.selected_cam = self.selected_cam % 3
+        self.selected_cam = self.selected_cam % len(self.selected_cam)
 
     def write_csv(self):
         """
         Writes current data to a csv file
         """
-        fn = "Webcam-pulse" + str(datetime.datetime.now())
-        fn = fn.replace(":", "_").replace(".", "_")
-        data = np.vstack((60 * self.processor.freqs, self.processor.fft))
-        np.savetxt(fn + ".csv", data, delimiter=',')
-        print "Writing csv"
+        # fn = "Webcam-pulse" + str(datetime.datetime.now())
+        # fn = fn.replace(":", "_").replace(".", "_")
+        # data = np.vstack((self.processor.ttimes, self.processor.bpms)).T
+        # np.savetxt(fn + ".csv", data, delimiter=',')
+        # print "Writing csv"
+        pass
 
     def toggle_search(self):
         """
@@ -127,6 +141,8 @@ class getPulseApp(object):
             print "Exiting"
             for cam in self.cameras:
                 cam.cam.release()
+            if self.send_serial:
+                self.serial.close()
             exit()
 
         for key in self.key_controls.keys():
@@ -158,10 +174,22 @@ class getPulseApp(object):
         if self.bpm_plot:
             self.make_bpm_plot()
 
+        if self.send_serial:
+            self.serial.write(str(self.processor.bpm) + "\r\n")
+
         # handle any key presses
         self.key_handler()
 
 if __name__ == "__main__":
-    App = getPulseApp()
+    parser = argparse.ArgumentParser(description='Webcam pulse detector.')
+    parser.add_argument('--serial', default=None,
+                       help='serial port destination for bpm data')
+    parser.add_argument('--baud', default=None,
+                       help='Baud rate for serial transmission')
+    parser.add_argument('--udp', default=None,
+                       help='udp address:port destination for bpm data')
+
+    args = parser.parse_args()
+    App = getPulseApp(args)
     while True:
         App.main_loop()

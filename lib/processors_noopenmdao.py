@@ -1,7 +1,6 @@
 import numpy as np
 import time
 import cv2
-import mdp
 import pylab
 import os
 import sys
@@ -30,11 +29,13 @@ class findFaceGetPulse(object):
         #self.window = np.hamming(self.buffer_size)
         self.data_buffer = []
         self.times = []
+        self.ttimes = []
         self.samples = []
         self.freqs = []
         self.fft = []
         self.slices = [[0]]
         self.t0 = time.time()
+        self.bpms = []
         self.bpm = 0
         dpath = resource_path("haarcascade_frontalface_alt.xml")
         if not os.path.exists(dpath):
@@ -224,6 +225,8 @@ class findFaceGetPulse(object):
             self.slices = [np.copy(self.frame_out[y1:y1 + h1, x1:x1 + w1, 1])]
             col = (100, 255, 100)
             gap = (self.buffer_size - L) / self.fps
+            #self.bpms.append(bpm)
+            #self.ttimes.append(time.time())
             if gap:
                 text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
             else:
