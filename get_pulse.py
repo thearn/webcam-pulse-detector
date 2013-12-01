@@ -37,7 +37,7 @@ class getPulseApp(object):
 
         # Init parameters for the cardiac data plot
         self.bpm_plot = False
-        self.plot_title = "Cardiac info - raw signal, filtered signal, and PSD"
+        self.plot_title = "Data display - raw signal (top) and PSD (bottom)"
 
         # Maps keystrokes to specified methods
         #(A GUI window must have focus for these to work)

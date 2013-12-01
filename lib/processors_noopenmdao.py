@@ -66,9 +66,9 @@ class findFaceGetPulse(object):
         self.last_center = center
         return shift
 
-    def draw_rect(self, rect):
+    def draw_rect(self, rect, col=(0, 255, 0)):
         x, y, w, h = rect
-        cv2.rectangle(self.frame_out, (x, y), (x + w, y + h), (0, 255, 0), 1)
+        cv2.rectangle(self.frame_out, (x, y), (x + w, y + h), col, 1)
 
     def get_subface_coord(self, fh_x, fh_y, fh_w, fh_h):
         x, y, w, h = self.face_rect
@@ -121,12 +121,12 @@ class findFaceGetPulse(object):
         self.gray = cv2.equalizeHist(cv2.cvtColor(self.frame_in,
                                                   cv2.COLOR_BGR2GRAY))
         col = (100, 255, 100)
-        cv2.putText(
-            self.frame_out, "Press 'S' to lock face and begin",
-                   (10, 25), cv2.FONT_HERSHEY_PLAIN, 2, col)
-        cv2.putText(self.frame_out, "Press 'D' to show data plot",
-                   (10, 50), cv2.FONT_HERSHEY_PLAIN, 2, col)
         if self.find_faces:
+            cv2.putText(
+                self.frame_out, "Press 'S' to lock face and begin",
+                       (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
+            cv2.putText(self.frame_out, "Press 'Esc' to quit",
+                       (10, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
             self.data_buffer, self.times, self.trained = [], [], False
             detected = list(self.face_cascade.detectMultiScale(self.gray,
                                                                scaleFactor=1.3,
@@ -141,10 +141,25 @@ class findFaceGetPulse(object):
                 if self.shift(detected[-1]) > 10:
                     self.face_rect = detected[-1]
             forehead1 = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
+            self.draw_rect(self.face_rect, col=(255, 0, 0))
+            x, y, w, h = self.face_rect
+            cv2.putText(self.frame_out, "Face",
+                       (x, y), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
             self.draw_rect(forehead1)
+            x, y, w, h = forehead1
+            cv2.putText(self.frame_out, "Forehead",
+                       (x, y), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
             return
         if set(self.face_rect) == set([1, 1, 2, 2]):
             return
+
+        cv2.putText(
+            self.frame_out, "Press 'S' to restart",
+                   (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
+        cv2.putText(self.frame_out, "Press 'D' to toggle data plot",
+                   (10, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
+        cv2.putText(self.frame_out, "Press 'Esc' to quit",
+                   (10, 75), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
 
         x, y, w, h = self.face_rect
         self.slices = [self.gray[y:y + h, x:x + w]]
@@ -207,7 +222,10 @@ class findFaceGetPulse(object):
 
             col = (100, 255, 100)
             gap = (self.buffer_size - L) / self.fps
-            text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
+            if gap:
+                text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
+            else:
+                text = "(estimate: %0.1f bpm)" % (self.bpm)
             tsize = 1
             cv2.putText(self.frame_out, text,
-                       (x, y), cv2.FONT_HERSHEY_PLAIN, tsize, col)
+                       (x - w / 2, y), cv2.FONT_HERSHEY_PLAIN, tsize, col)
