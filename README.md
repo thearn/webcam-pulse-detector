@@ -4,8 +4,8 @@ webcam-pulse-detector
 -----------------------
 
 UPDATE: Stand-alone (no dependancy) precompiled application now available!
- - Download for Mac OSX 10.6 (and later): [get_pulse_osx.zip](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse_osx.zip/download)
- - Download for 64-bit Windows 7 and 8: [get_pulse.exe](http://sourceforge.net/projects/webcampulsedetector/files/get_pulse.exe/download)
+ - Download for Windows 7 and 8: [webcam-pulse-detector_win.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_win.zip/download) (42 Mb) 
+ - Download for Mac OSX 10.6 (and later): [webcam-pulse-detector_mac.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_mac.zip/download) (21 Mb)
  - Debian/Ubuntu/Mint Linux: Coming very soon. For now, it is recommended that you run from source on the `no_openmdao` branch if you just want to test things out.
 
 This code can be run from source by [following the instructions below](#running-from-source).
