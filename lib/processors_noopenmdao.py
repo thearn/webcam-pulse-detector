@@ -123,8 +123,9 @@ class findFaceGetPulse(object):
         col = (100, 255, 100)
         if self.find_faces:
             cv2.putText(
-                self.frame_out, "Press 'C' to change camera (current: %s)" % str(cam),
-                       (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
+                self.frame_out, "Press 'C' to change camera (current: %s)" % str(
+                    cam),
+                (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
             cv2.putText(
                 self.frame_out, "Press 'S' to lock face and begin",
                        (10, 50), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
@@ -156,8 +157,9 @@ class findFaceGetPulse(object):
         if set(self.face_rect) == set([1, 1, 2, 2]):
             return
         cv2.putText(
-            self.frame_out, "Press 'C' to change camera (current: %s)" % str(cam),
-                   (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
+            self.frame_out, "Press 'C' to change camera (current: %s)" % str(
+                cam),
+            (10, 25), cv2.FONT_HERSHEY_PLAIN, 1.25, col)
         cv2.putText(
             self.frame_out, "Press 'S' to restart",
                    (10, 50), cv2.FONT_HERSHEY_PLAIN, 1.5, col)
@@ -188,6 +190,7 @@ class findFaceGetPulse(object):
             even_times = np.linspace(self.times[0], self.times[-1], L)
             interpolated = np.interp(even_times, self.times, processed)
             interpolated = np.hamming(L) * interpolated
+            interpolated = interpolated - np.mean(interpolated)
             raw = np.fft.rfft(interpolated)
             phase = np.angle(raw)
             self.fft = np.abs(raw)
@@ -225,8 +228,8 @@ class findFaceGetPulse(object):
             self.slices = [np.copy(self.frame_out[y1:y1 + h1, x1:x1 + w1, 1])]
             col = (100, 255, 100)
             gap = (self.buffer_size - L) / self.fps
-            #self.bpms.append(bpm)
-            #self.ttimes.append(time.time())
+            # self.bpms.append(bpm)
+            # self.ttimes.append(time.time())
             if gap:
                 text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
             else:
