@@ -79,6 +79,8 @@ class getPulseApp(object):
             destroyWindow(self.plot_title)
         else:
             print "bpm plot enabled"
+            if self.processor.find_faces:
+                self.toggle_search()
             self.bpm_plot = True
             self.make_bpm_plot()
             moveWindow(self.plot_title, self.w, 0)

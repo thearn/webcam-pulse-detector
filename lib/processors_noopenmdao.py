@@ -3,6 +3,19 @@ import time
 import cv2
 import mdp
 import pylab
+import os
+import sys
+
+
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
 
 
 class findFaceGetPulse(object):
@@ -17,10 +30,17 @@ class findFaceGetPulse(object):
         #self.window = np.hamming(self.buffer_size)
         self.data_buffer = []
         self.times = []
+        self.samples = []
+        self.freqs = []
+        self.fft = []
+        self.slices = [[0]]
         self.t0 = time.time()
         self.bpm = 0
-        self.face_cascade = cv2.CascadeClassifier(
-            "cascades/haarcascade_frontalface_alt.xml")
+        dpath = resource_path("haarcascade_frontalface_alt.xml")
+        print dpath
+        if not os.path.exists(dpath):
+            print "Cascade file not present!"
+        self.face_cascade = cv2.CascadeClassifier(dpath)
 
         self.face_rect = [1, 1, 2, 2]
         self.last_center = np.array([0, 0])
