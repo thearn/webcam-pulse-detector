@@ -3,6 +3,8 @@
 webcam-pulse-detector
 -----------------------
 
+UPDATE: Stand-alone precompiled application coming soon.
+
 A python code that detects the heart-rate of an individual using a common webcam or network IP camera. 
 Tested on OSX 10.8 (Mountain Lion), Ubuntu 13.04 (Ringtail), and Windows 7 & 8.
 
