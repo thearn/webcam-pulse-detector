@@ -148,7 +148,7 @@ header ul li + li {
   border-left:1px solid #fff;
 }
 
-header ul li + li + li {
+header ul li + li + li +li +li {
   border-right:none;
   width:89px;
 }
