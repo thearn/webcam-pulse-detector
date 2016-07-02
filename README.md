@@ -3,6 +3,16 @@
 webcam-pulse-detector
 -----------------------
 
+UPDATE: Stand-alone (no dependancy) precompiled application now available!
+ - Download for Windows 7 and 8: [webcam-pulse-detector_win.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_win.zip/download) (42 Mb) 
+ - Download for Mac OSX 10.6 (and later): [webcam-pulse-detector_mac.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_mac.zip/download) (21 Mb)
+ - Debian/Ubuntu/Mint Linux: Coming very soon. For now, it is recommended that you run from source on the `no_openmdao` branch if you just want to test things out.
+
+The application can be run by simply executing the binary contained in the zip file for your platform.
+This code can also be run from source by following the instructions below.
+ 
+-------------------
+
 A python code that detects the heart-rate of an individual using a common webcam or network IP camera. 
 Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
 
