@@ -59,37 +59,12 @@ Requirements:
 
 - [Python v2.7+](http://python.org/)
 - [OpenCV v2.4+](http://opencv.org/), with the cv2 python bindings
- 
-OpenCV is a powerful open-source computer vision library, with a convenient 
-numpy-compatible interface in the cv2 bindings.
-
-- [OpenMDAO v0.5.5+](http://openmdao.org/)
-
-OpenMDAO is an open-source engineering framework that serves as a convenient 
-environment to containerize the required real-time analysis, and 
-allow for that analysis to be easily tweaked to specification and compared with alternative designs. 
-Upon installation, OpenMDAO is bootstrapped into its own Python 
-virtualenv, which must be activated before use (see the Quickstart section below). OpenMDAO requires python 2.6+, numpy, scipy, and matplotlib 
-(see http://openmdao.org/docs/getting-started/requirements.html)
-
-Running Windows, and completely new to Python? Full instructions for getting started with all requirements needed to
-run this code are available [here](win_pythonxy.md)
+- Numpy, Scipy
 
 Quickstart:
 ------------
-- Activate the openMDAO virtual python environment in a command or terminal window. On Linux and OSX, this is done by
-running (note the period):
 
-```
-. OpenMDAO/bin/activate
-```
-Or on Windows:
-
-```
-OpenMDAO\Scripts\activate
-```
-
-- In the activated environment, navigate to the downloaded source directory, and run get_pulse.py to start the application
+- run get_pulse.py to start the application
 
 ```
 python get_pulse.py
