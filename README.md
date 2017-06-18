@@ -3,7 +3,7 @@
 webcam-pulse-detector
 -----------------------
 
-- UPDATE: Python 3.5+ and OpenCV 3.X support coming very soon
+- UPDATE: Now with Python 3.5+ and OpenCV 3.0+ support
 
  UPDATE: Stand-alone (no dependancy) precompiled application now available!
  - Download for Windows 7 and 8: [webcam-pulse-detector_win.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_win.zip/download) (42 Mb) 
@@ -53,7 +53,7 @@ The overall dataflow/execution order for the real-time signal processing looks l
 Requirements:
 ---------------
 
-- [Python v2.7 (3.5 support in progress)](http://python.org/)
+- [Python v2.7 or v3.5+)](http://python.org/)
 - [OpenCV v2+](http://opencv.org/)
 - Numpy, Scipy
 
