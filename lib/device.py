@@ -1,5 +1,6 @@
 import cv2, time
-import urllib2, base64
+#TODO: fix ipcam
+#import urllib2, base64
 import numpy as np
 
 class ipCamera(object):

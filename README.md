@@ -3,18 +3,20 @@
 webcam-pulse-detector
 -----------------------
 
-UPDATE: Stand-alone (no dependancy) precompiled application now available!
+- UPDATE: Python 3.5+ and OpenCV 3.X support coming very soon
+
+ UPDATE: Stand-alone (no dependancy) precompiled application now available!
  - Download for Windows 7 and 8: [webcam-pulse-detector_win.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_win.zip/download) (42 Mb) 
  - Download for Mac OSX 10.6 (and later): [webcam-pulse-detector_mac.zip](http://sourceforge.net/projects/webcampulsedetector/files/webcam-pulse-detector_mac.zip/download) (21 Mb)
  - Debian/Ubuntu/Mint Linux: Coming very soon. For now, it is recommended that you run from source on the `no_openmdao` branch if you just want to test things out.
 
 The application can be run by simply executing the binary contained in the zip file for your platform.
 This code can also be run from source by following the instructions below.
- 
--------------------
+
+---------------------------------------
 
 A python code that detects the heart-rate of an individual using a common webcam or network IP camera. 
-Tested on OSX 10.7 (Lion), Ubuntu 13.04 (Ringtail), and Windows 7.
+Tested on OSX, Ubuntu, and Windows.
 
 Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
 with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
@@ -22,14 +24,6 @@ pulse detection examples using [Python](http://python.org/) and [OpenCV](http://
 more general take on the offline post-processing methodology). 
 This goal is comparable to those of a few previous efforts in this area 
 (such as https://github.com/mossblaser/HeartMonitor).
-
-This code was developed at [NASA Glenn Research Center](http://www.nasa.gov/centers/glenn) in 
-support of [OpenMDAO](http://openmdao.org/), under the Aeronautical Sciences Project in NASA's 
-[Fundamental Aeronautics Program](http://www.aeronautics.nasa.gov/fap/), as well as the Crew State Monitoring Element 
-of the Vehicle Systems Safety Technologies Project, in NASA’s 
-[Aviation Safety Program](http://www.aeronautics.nasa.gov/programs_avsafe.htm).
-
-A list of other open-source NASA codes can be found at [code.nasa.gov](http://code.nasa.gov/project/).
 
 How it works:
 -----------------
@@ -55,20 +49,12 @@ The overall dataflow/execution order for the real-time signal processing looks l
 
 ![Alt text](http://i.imgur.com/xS7O8U3.png "Signal processing")
 
-This signal processing design is implemented in the openMDAO assembly object defined in
-[lib/processors.py](lib/processors.py).
-
-The definition of each component block used can be found in the source 
-files [lib/imageProcess.py](lib/imageProcess.py), [lib/signalProcess.py](lib/signalProcess.py), and 
-[lib/sliceops.py](lib/sliceops.py). The `@bin` and `@bout` blocks in the above graph denote assembly-level input and 
-output.
-
 
 Requirements:
 ---------------
 
-- [Python v2.7+](http://python.org/)
-- [OpenCV v2.4+](http://opencv.org/), with the cv2 python bindings
+- [Python v2.7 (3.5 support in progress)](http://python.org/)
+- [OpenCV v2+](http://opencv.org/)
 - Numpy, Scipy
 
 Quickstart:

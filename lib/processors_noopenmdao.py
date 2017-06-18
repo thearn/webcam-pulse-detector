@@ -39,7 +39,7 @@ class findFaceGetPulse(object):
         self.bpm = 0
         dpath = resource_path("haarcascade_frontalface_alt.xml")
         if not os.path.exists(dpath):
-            print "Cascade file not present!"
+            print("Cascade file not present!")
         self.face_cascade = cv2.CascadeClassifier(dpath)
 
         self.face_rect = [1, 1, 2, 2]
@@ -184,7 +184,6 @@ class findFaceGetPulse(object):
         self.samples = processed
         if L > 10:
             self.output_dim = processed.shape[0]
-            # print "ready"
 
             self.fps = float(L) / (self.times[-1] - self.times[0])
             even_times = np.linspace(self.times[0], self.times[-1], L)

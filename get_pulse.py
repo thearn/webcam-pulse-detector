@@ -5,7 +5,7 @@ from cv2 import moveWindow
 import argparse
 import numpy as np
 import datetime
-from serial import Serial
+#from serial import Serial
 import socket
 import sys
 
@@ -49,7 +49,7 @@ class getPulseApp(object):
 
         self.cameras = []
         self.selected_cam = 0
-        for i in xrange(3):
+        for i in range(3):
             camera = Camera(camera=i)  # first camera by default
             if camera.valid or not len(self.cameras):
                 self.cameras.append(camera)
@@ -97,7 +97,7 @@ class getPulseApp(object):
         fn = fn.replace(":", "_").replace(".", "_")
         data = np.vstack((self.processor.times, self.processor.samples)).T
         np.savetxt(fn + ".csv", data, delimiter=',')
-        print "Writing csv"
+        print("Writing csv")
 
     def toggle_search(self):
         """
@@ -108,18 +108,18 @@ class getPulseApp(object):
         """
         #state = self.processor.find_faces.toggle()
         state = self.processor.find_faces_toggle()
-        print "face detection lock =", not state
+        print("face detection lock =", not state)
 
     def toggle_display_plot(self):
         """
         Toggles the data display.
         """
         if self.bpm_plot:
-            print "bpm plot disabled"
+            print("bpm plot disabled")
             self.bpm_plot = False
             destroyWindow(self.plot_title)
         else:
-            print "bpm plot enabled"
+            print("bpm plot enabled")
             if self.processor.find_faces:
                 self.toggle_search()
             self.bpm_plot = True
@@ -152,7 +152,7 @@ class getPulseApp(object):
 
         self.pressed = waitKey(10) & 255  # wait for keypress for 10 ms
         if self.pressed == 27:  # exit program on 'esc'
-            print "Exiting"
+            print("Exiting")
             for cam in self.cameras:
                 cam.cam.release()
             if self.send_serial:
