@@ -91,7 +91,7 @@ def plotXY(data,size = (280,640),margin = 25,name = "data",labels=[], skip = [],
         mx = max(yy)
         if labels:
             if labels[i]:
-                for ii in xrange(len(x)):
+                for ii in range(len(x)):
                     if ii%skip[i] == 0:
                         col = (255,255,255)
                         ss = '{0:.%sf}' % label_ndigits[i]
@@ -121,6 +121,6 @@ def plotXY(data,size = (280,640),margin = 25,name = "data",labels=[], skip = [],
     """
     #hack-y alternative:
     for p in P:
-        for i in xrange(len(p)-1):
+        for i in range(len(p)-1):
             cv2.line(z,tuple(p[i]),tuple(p[i+1]), (255,255,255),1)    
     cv2.imshow(name,z)
