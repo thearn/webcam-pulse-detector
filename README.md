@@ -19,13 +19,6 @@ This code can also be run from source by following the instructions below.
 A python code that detects the heart-rate of an individual using a common webcam or network IP camera. 
 Tested on OSX, Ubuntu, and Windows.
 
-Inspired by reviewing recent work on [Eulerian Video Magnification](http://people.csail.mit.edu/mrub/vidmag/), 
-with motivation to implement something visually comparable (though not necessarily identical in formulation) to their
-pulse detection examples using [Python](http://python.org/) and [OpenCV](http://opencv.org/) (see https://github.com/brycedrennan/eulerian-magnification for a 
-more general take on the offline post-processing methodology). 
-This goal is comparable to those of a few previous efforts in this area 
-(such as https://github.com/mossblaser/HeartMonitor).
-
 How it works:
 -----------------
 This application uses [OpenCV](http://opencv.org/) to find the location of the user's face, then isolate the forehead region. Data is collected
@@ -95,15 +88,3 @@ isolated in about 15 to 20 seconds. A count-down is shown in the image frame.
 noise, sudden change in lighting, etc) the data collection process is reset and 
 started over. The sensitivity of this feature can be tweaked by changing `data_spike_limit` on line 31 of [get_pulse.py](get_pulse.py).
 Other mutable parameters of the analysis can be changed here as well.
-
-TODO:
-------
-- There have been some requests for a video demo
-- Instead of processing using the green channel alone, it is likely that some fixed combination of the statistics of the
-R,G,B channels could instead be optimal (though I was unable to find a simple combination that was better than green
-alone). If so, the mixing ratios might be determinable from the forward projection matrices of PCA or ICA operators 
-computed on a set of mean value R,G, and B data gathered over a trial data set (and verified with different individuals 
-under different lighting conditions).
-- Support for multiple individuals
-- Smoother tracking of data from foreheads, perhaps by buffering and registering/inverse-transforming image subframes
-
