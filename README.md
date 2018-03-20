@@ -50,6 +50,8 @@ Requirements:
 - [Python v2.7 or v3.5+)](http://python.org/)
 - [OpenCV v2+](http://opencv.org/)
 - Numpy, Scipy
+- python-tk / python3-tk
+
 
 Quickstart:
 ------------
