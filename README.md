@@ -1,3 +1,14 @@
+## This repository is a fork of [thearn/webcam-pulse-detector](https://github.com/thearn/webcam-pulse-detector) with few modifications made for automated video processing support:
+
+- Tracking starts automatically when face is stable for N seconds. 
+- Tracking restarts automatically when face is not detected for some time or if it moves out of the range. 
+- The face frame is stabilized for better performance.
+- Added a video processing example in `get_pulse_from_video.py`
+
+### Enjoy!
+
+---
+
 ![Alt text](http://i.imgur.com/2ngZopS.jpg "Screenshot")
 
 webcam-pulse-detector

@@ -1,29 +1,26 @@
-from lib.device import Camera
 from lib.processors_noopenmdao import findFaceGetPulse
 from lib.interface import plotXY, imshow, waitKey, destroyWindow
+import cv2
 from cv2 import moveWindow
 import argparse
 import numpy as np
 import datetime
-#TODO: work on serial port comms, if anyone asks for it
-#from serial import Serial
 import socket
 import sys
+from PIL import Image
 
 
 class getPulseApp(object):
 
     """
-    Python application that finds a face in a webcam stream, then isolates the
+    Python application that finds a face in a video then isolates the
     forehead.
 
     Then the average green-light intensity in the forehead region is gathered
     over time, and the detected person's pulse is estimated.
     """
 
-    def __init__(self, args):
-        # Imaging device - must be a connected camera (not an ip camera or mjpeg
-        # stream)
+    def __init__(self, args, fps):
         serial = args.serial
         baud = args.baud
         self.send_serial = False
@@ -49,16 +46,9 @@ class getPulseApp(object):
             self.sock = socket.socket(socket.AF_INET, # Internet
                  socket.SOCK_DGRAM) # UDP
 
-        self.cameras = []
-        self.selected_cam = 0
-        for i in range(3):
-            camera = Camera(camera=i)  # first camera by default
-            if camera.valid or not len(self.cameras):
-                self.cameras.append(camera)
-            else:
-                break
         self.w, self.h = 0, 0
         self.pressed = 0
+
         # Containerized analysis of recieved image frames (an openMDAO assembly)
         # is defined next.
 
@@ -68,32 +58,23 @@ class getPulseApp(object):
 
         # Basically, everything that isn't communication
         # to the camera device or part of the GUI
-        self.processor = findFaceGetPulse()
+        self.processor = findFaceGetPulse(fps, True)
 
         # Init parameters for the cardiac data plot
         self.bpm_plot = False
         self.plot_title = "Data display - raw signal (top) and PSD (bottom)"
 
         # Maps keystrokes to specified methods
-        #(A GUI window must have focus for these to work)
+        # (A GUI window must have focus for these to work)
         self.key_controls = {"s": self.toggle_search,
                              "d": self.toggle_display_plot,
-                             "c": self.toggle_cam,
                              "f": self.write_csv}
-
-    def toggle_cam(self):
-        if len(self.cameras) > 1:
-            self.processor.find_faces = True
-            self.bpm_plot = False
-            destroyWindow(self.plot_title)
-            self.selected_cam += 1
-            self.selected_cam = self.selected_cam % len(self.cameras)
 
     def write_csv(self):
         """
         Writes current data to a csv file
         """
-        fn = "Webcam-pulse" + str(datetime.datetime.now())
+        fn = "video-pulse" + str(datetime.datetime.now())
         fn = fn.replace(":", "_").replace(".", "_")
         data = np.vstack((self.processor.times, self.processor.samples)).T
         np.savetxt(fn + ".csv", data, delimiter=',')
@@ -153,8 +134,6 @@ class getPulseApp(object):
         self.pressed = waitKey(10) & 255  # wait for keypress for 10 ms
         if self.pressed == 27:  # exit program on 'esc'
             print("Exiting")
-            for cam in self.cameras:
-                cam.cam.release()
             if self.send_serial:
                 self.serial.close()
             sys.exit()
@@ -163,12 +142,11 @@ class getPulseApp(object):
             if chr(self.pressed) == key:
                 self.key_controls[key]()
 
-    def main_loop(self):
+    def main_loop(self, frame):
         """
         Single iteration of the application's main loop.
         """
-        # Get current image frame from the camera
-        frame = self.cameras[self.selected_cam].get_frame()
+        # Get current image frame from the video file
         self.h, self.w, _c = frame.shape
 
         # display unaltered frame
@@ -177,7 +155,7 @@ class getPulseApp(object):
         # set current image frame to the processor's input
         self.processor.frame_in = frame
         # process the image frame to perform all needed analysis
-        self.processor.run(self.selected_cam)
+        self.processor.run()
         # collect the output frame for display
         output_frame = self.processor.frame_out
 
@@ -205,8 +183,36 @@ if __name__ == "__main__":
                         help='Baud rate for serial transmission')
     parser.add_argument('--udp', default=None,
                         help='udp address:port destination for bpm data')
-
     args = parser.parse_args()
-    App = getPulseApp(args)
-    while True:
-        App.main_loop()
+
+    # Find OpenCV version
+    (major_ver, minor_ver, subminor_ver) = (cv2.__version__).split('.')
+
+    video_cap = cv2.VideoCapture('data/67_bpm_cut.mp4')
+
+    # get FPS
+    if int(major_ver) < 3:
+        fps = video_cap.get(cv2.cv.CV_CAP_PROP_FPS)
+        print("Frames per second using video.get(cv2.cv.CV_CAP_PROP_FPS): {0}".format(fps))
+    else:
+        fps = video_cap.get(cv2.CAP_PROP_FPS)
+        print("Frames per second using video.get(cv2.CAP_PROP_FPS) : {0}".format(fps))
+
+    App = getPulseApp(args, fps)
+
+    plot_enabled = False
+
+    while video_cap.isOpened():
+        ret, frame = video_cap.read()
+
+        if frame is None:
+            break
+
+        App.main_loop(frame)
+
+        if not plot_enabled:
+            App.toggle_display_plot()
+            plot_enabled = True
+
+    print([int(val) for val in App.processor.results])
+    print("mean: ", np.mean(App.processor.results))
