@@ -6,6 +6,8 @@ import pylab
 import os
 import sys
 
+from .dl_face_detector import get_face_from_img
+
 
 def resource_path(relative_path):
     """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -232,22 +234,8 @@ class findFaceGetPulse(object):
     def detect_face(self):
         self.gray = cv2.equalizeHist(cv2.cvtColor(self.frame_in,
                                                   cv2.COLOR_BGR2GRAY))
-        faces = []
-        detected = list(self.face_cascade.detectMultiScale(self.gray,
-                                                           scaleFactor=1.3,
-                                                           minNeighbors=4,
-                                                           minSize=(50, 50),
-                                                           flags=cv2.CASCADE_SCALE_IMAGE))
 
-        if len(detected) > 0:
-            detected.sort(key=lambda a: a[-1] * a[-2])
-            biggest_face = detected[-1]
-            faces.append(biggest_face)
-            self.face_rect = biggest_face
-        else:
-            # face not found
-            self.face_rect = None
-            return
+        self.face_rect = get_face_from_img(self.frame_in)
 
     def draw_face_rect(self):
         forehead1 = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
