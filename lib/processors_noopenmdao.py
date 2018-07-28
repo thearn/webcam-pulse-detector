@@ -260,8 +260,8 @@ class findFaceGetPulse(object):
     def face_dict_to_rect(selfs, face_dict):
         return (int(face_dict['x']),
                 int(face_dict['y']),
-                int(face_dict['h']),
-                int(face_dict['w']))
+                int(face_dict['w']),
+                int(face_dict['h']))
 
     def is_face_close(self, face1, face2):
         delta = .07
