@@ -47,6 +47,11 @@ The overall dataflow/execution order for the real-time signal processing looks l
 Requirements:
 ---------------
 
+**Install dependencies using:**
+
+`pip install -r requirements.txt`
+
+
 - [Python v2.7 or v3.5+)](http://python.org/)
 - [OpenCV v2+](http://opencv.org/)
 - Numpy, Scipy
