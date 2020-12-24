@@ -58,7 +58,7 @@ class getPulseApp(object):
                 break
         self.w, self.h = 0, 0
         self.pressed = 0
-        # Containerized analysis of recieved image frames (an openMDAO assembly)
+        # Containerized analysis of received image frames (an openMDAO assembly)
         # is defined next.
 
         # This assembly is designed to handle all image & signal analysis,
