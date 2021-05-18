@@ -204,35 +204,38 @@ class findFaceGetPulse(object):
             pfreq = freqs[idx]
             self.freqs = pfreq
             self.fft = pruned
-            idx2 = np.argmax(pruned)
-
-            t = (np.sin(phase[idx2]) + 1.) / 2.
-            t = 0.9 * t + 0.1
-            alpha = t
-            beta = 1 - t
-
-            self.bpm = self.freqs[idx2]
-            self.idx += 1
-
-            x, y, w, h = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
-            r = alpha * self.frame_in[y:y + h, x:x + w, 0]
-            g = alpha * \
-                self.frame_in[y:y + h, x:x + w, 1] + \
-                beta * self.gray[y:y + h, x:x + w]
-            b = alpha * self.frame_in[y:y + h, x:x + w, 2]
-            self.frame_out[y:y + h, x:x + w] = cv2.merge([r,
-                                                          g,
-                                                          b])
-            x1, y1, w1, h1 = self.face_rect
-            self.slices = [np.copy(self.frame_out[y1:y1 + h1, x1:x1 + w1, 1])]
-            col = (100, 255, 100)
-            gap = (self.buffer_size - L) / self.fps
-            # self.bpms.append(bpm)
-            # self.ttimes.append(time.time())
-            if gap:
-                text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
+            try:
+                idx2 = np.argmax(pruned)
+            except:
+                pass
             else:
-                text = "(estimate: %0.1f bpm)" % (self.bpm)
-            tsize = 1
-            cv2.putText(self.frame_out, text,
-                       (int(x - w / 2), int(y)), cv2.FONT_HERSHEY_PLAIN, tsize, col)
+                t = (np.sin(phase[idx2]) + 1.) / 2.
+                t = 0.9 * t + 0.1
+                alpha = t
+                beta = 1 - t
+
+                self.bpm = self.freqs[idx2]
+                self.idx += 1
+
+                x, y, w, h = self.get_subface_coord(0.5, 0.18, 0.25, 0.15)
+                r = alpha * self.frame_in[y:y + h, x:x + w, 0]
+                g = alpha * \
+                    self.frame_in[y:y + h, x:x + w, 1] + \
+                    beta * self.gray[y:y + h, x:x + w]
+                b = alpha * self.frame_in[y:y + h, x:x + w, 2]
+                self.frame_out[y:y + h, x:x + w] = cv2.merge([r,
+                                                              g,
+                                                              b])
+                x1, y1, w1, h1 = self.face_rect
+                self.slices = [np.copy(self.frame_out[y1:y1 + h1, x1:x1 + w1, 1])]
+                col = (100, 255, 100)
+                gap = (self.buffer_size - L) / self.fps
+                # self.bpms.append(bpm)
+                # self.ttimes.append(time.time())
+                if gap:
+                    text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
+                else:
+                    text = "(estimate: %0.1f bpm)" % (self.bpm)
+                tsize = 1
+                cv2.putText(self.frame_out, text,
+                           (int(x - w / 2), int(y)), cv2.FONT_HERSHEY_PLAIN, tsize, col)
