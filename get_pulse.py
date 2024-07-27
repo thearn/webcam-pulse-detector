@@ -6,12 +6,12 @@ import argparse
 import numpy as np
 import datetime
 #TODO: work on serial port comms, if anyone asks for it
-#from serial import Serial
 import socket
 import sys
+import joblib
+import pandas as pd
 
 class getPulseApp(object):
-
     """
     Python application that finds a face in a webcam stream, then isolates the
     forehead.
@@ -46,7 +46,7 @@ class getPulseApp(object):
                 port = int(port)
             self.udp = (ip, port)
             self.sock = socket.socket(socket.AF_INET, # Internet
-                 socket.SOCK_DGRAM) # UDP
+                                      socket.SOCK_DGRAM) # UDP
 
         self.cameras = []
         self.selected_cam = 0
@@ -56,9 +56,9 @@ class getPulseApp(object):
                 self.cameras.append(camera)
             else:
                 break
-        self.w, self.h = 0, 0
+        self.w, self.w, = 0, 0
         self.pressed = 0
-        # Containerized analysis of recieved image frames (an openMDAO assembly)
+        # Containerized analysis of received image frames (an openMDAO assembly)
         # is defined next.
 
         # This assembly is designed to handle all image & signal analysis,
@@ -67,7 +67,7 @@ class getPulseApp(object):
 
         # Basically, everything that isn't communication
         # to the camera device or part of the GUI
-        self.processor = findFaceGetPulse(bpm_limits=[50, 160],
+        self.processor = findFaceGetPulse(bpm_limits=[60, 160],
                                           data_spike_limit=2500.,
                                           face_detector_smoothness=10.)
 
@@ -82,6 +82,11 @@ class getPulseApp(object):
                              "c": self.toggle_cam,
                              "f": self.write_csv}
 
+        # Load the columns and model for heart attack prediction
+        with open('columns.txt', 'r') as f:
+            self.columns = [line.strip() for line in f]
+        self.heart_attack_model = joblib.load('heart_attack_model.pkl')
+
     def toggle_cam(self):
         if len(self.cameras) > 1:
             self.processor.find_faces = True
@@ -94,22 +99,66 @@ class getPulseApp(object):
         """
         Writes current data to a csv file
         """
-        fn = "Webcam-pulse" + str(datetime.datetime.now())
-        fn = fn.replace(":", "_").replace(".", "_")
+        fna = "Webcam-pulse" + str(datetime.datetime.now())
+        fna = fna.replace(":", "_").replace(".", "_")
         data = np.vstack((self.processor.times, self.processor.samples)).T
-        np.savetxt(fn + ".csv", data, delimiter=',')
-        print("Writing csv")
+        np.savetxt(fna + ".csv", data, delimiter=',')
+        print("Writing csv with bpm")
 
     def toggle_search(self):
         """
         Toggles a motion lock on the processor's face detection component.
 
         Locking the forehead location in place significantly improves
-        data quality, once a forehead has been sucessfully isolated.
+        data quality, once a forehead has been successfully isolated.
         """
-        #state = self.processor.find_faces.toggle()
         state = self.processor.find_faces_toggle()
         print("face detection lock =", not state)
+        # Initialize attributes for heart attack prediction
+        self.age = None
+        self.sex = None
+        self.o2_saturation = None
+        self.cp = None
+
+    def set_age(self, age):
+        self.age = age
+
+    def set_sex(self, sex):
+        self.sex = sex
+
+    def set_o2_saturation(self, o2_saturation):
+        self.o2_saturation = o2_saturation
+
+    def set_cp(self, cp):
+        self.cp = cp
+
+    def predict_heart_attack(self):
+        # Collect the necessary features for prediction
+        features = {
+            'age': self.age,
+            'sex': self.sex,
+            'o2Saturation': self.o2_saturation,
+            'cp': self.cp
+        }
+        print(features.keys())
+        # Example: Populate features with default values if needed
+        if 'cp' not in features:
+            features['cp'] = 0  # Define a sensible default
+        for feature in self.columns:
+            if feature not in features:
+                print(f"Missing feature: {feature}")
+                # Optionally, handle missing keys with defaults or warnings
+                features[feature] = 0  # Example default, adjust as needed
+
+        # Ensure the features are in the correct order
+        feature_values = [features[feature] for feature in self.columns]
+        print(self.columns)
+        expected_columns = ['age', 'sex', 'cp', 'trestbps', 'chol', 'fbs', 'restecg', 'thalach', 'exang', 'oldpeak', 'slope', 'ca', 'thal']
+        print(all(col in self.columns for col in expected_columns))  # Should be True
+
+        # Predict heart attack
+        prediction = self.heart_attack_model.predict([feature_values])
+        return prediction[0]
 
     def toggle_display_plot(self):
         """
@@ -194,6 +243,17 @@ class getPulseApp(object):
 
         if self.send_udp:
             self.sock.sendto(str(self.processor.bpm), self.udp)
+
+        # Example: Set the attributes with actual data
+        self.set_age(45)  # Replace with actual data
+        self.set_sex(1)   # Replace with actual data
+        self.set_o2_saturation(98.6)  # Replace with actual data
+        self.set_cp(3)  # Replace with actual data
+
+        # Predict heart attack
+        heart_attack_risk = self.predict_heart_attack()
+        if heart_attack_risk == 1:
+            print("Warning: High risk of heart attack detected!")
 
         # handle any key presses
         self.key_handler()

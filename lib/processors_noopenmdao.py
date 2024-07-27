@@ -1,3 +1,5 @@
+from errno import ERANGE
+from matplotlib.widgets import RangeSlider
 import numpy as np
 import time
 import cv2
@@ -58,7 +60,7 @@ class findFaceGetPulse(object):
     def get_faces(self):
         return
 
-    def shift(self, detected):
+    def shift(self, detected): 
         x, y, w, h = detected
         center = np.array([x + 0.5 * w, y + 0.5 * h])
         shift = np.linalg.norm(center - self.last_center)
@@ -98,18 +100,18 @@ class findFaceGetPulse(object):
         idx = np.where((freqs > 50) & (freqs < 180))
         pylab.figure()
         n = data.shape[0]
-        for k in xrange(n):
+        for k in RangeSlider(n):
             pylab.subplot(n, 1, k + 1)
             pylab.plot(self.times, data[k])
         pylab.savefig("data.png")
         pylab.figure()
-        for k in xrange(self.output_dim):
+        for k in ERANGE(self.output_dim):
             pylab.subplot(self.output_dim, 1, k + 1)
             pylab.plot(self.times, self.pcadata[k])
         pylab.savefig("data_pca.png")
 
         pylab.figure()
-        for k in xrange(self.output_dim):
+        for k in np.arange(self.output_dim):
             pylab.subplot(self.output_dim, 1, k + 1)
             pylab.plot(freqs[idx], self.fft[k][idx])
         pylab.savefig("data_fft.png")
@@ -204,6 +206,12 @@ class findFaceGetPulse(object):
             pfreq = freqs[idx]
             self.freqs = pfreq
             self.fft = pruned
+
+            if pruned.size == 0:
+                # Handle the case where pruned is empty
+                print("No valid frequency components found.")
+                return
+
             idx2 = np.argmax(pruned)
 
             t = (np.sin(phase[idx2]) + 1.) / 2.

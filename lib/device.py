@@ -1,7 +1,7 @@
 import cv2, time
-#TODO: fix ipcam
-#import urllib2, base64
+import  base64  # Add base64 import
 import numpy as np
+import urllib.request  # Add this import
 
 class ipCamera(object):
 
@@ -9,11 +9,11 @@ class ipCamera(object):
         self.url = url
         auth_encoded = base64.encodestring('%s:%s' % (user, password))[:-1]
 
-        self.req = urllib2.Request(self.url)
+        self.req = urllib.request.Request(self.url)  # Update urllib2 to urllib.request
         self.req.add_header('Authorization', 'Basic %s' % auth_encoded)
 
     def get_frame(self):
-        response = urllib2.urlopen(self.req)
+        response = urllib.request.urlopen(self.req)  # Update urllib2 to urllib.request
         img_array = np.asarray(bytearray(response.read()), dtype=np.uint8)
         frame = cv2.imdecode(img_array, 1)
         return frame

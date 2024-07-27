@@ -1,5 +1,4 @@
-from openmdao.lib.datatypes.api import Float, Dict, Array, List, Int, Bool
-from openmdao.main.api import Component, Assembly
+from openmdao.api import ExplicitComponent, Problem, Group, IndepVarComp
 import numpy as np
 import time
 import cv2
@@ -8,8 +7,7 @@ import cv2
 Whole-frame image processing components & helper methods
 """
 
-
-class RGBSplit(Component):
+class RGBSplit(ExplicitComponent):
 
     """
     Extract the red, green, and blue channels from an (n,m,3) shaped
@@ -20,19 +18,19 @@ class RGBSplit(Component):
 
     def __init__(self):
         super(RGBSplit, self).__init__()
-        self.add("frame_in", Array(iotype="in"))
+        self.add_input("frame_in", val=np.zeros((1, 1, 3)))
+        self.add_output("R", val=np.zeros((1, 1)))
+        self.add_output("G", val=np.zeros((1, 1)))
+        self.add_output("B", val=np.zeros((1, 1)))
 
-        self.add("R", Array(iotype="out"))
-        self.add("G", Array(iotype="out"))
-        self.add("B", Array(iotype="out"))
-
-    def execute(self):
-        self.R = self.frame_in[:, :, 0]
-        self.G = self.frame_in[:, :, 1]
-        self.B = self.frame_in[:, :, 2]
+    def compute(self, inputs, outputs):
+        frame_in = inputs['frame_in']
+        outputs['R'] = frame_in[:, :, 0]
+        outputs['G'] = frame_in[:, :, 1]
+        outputs['B'] = frame_in[:, :, 2]
 
 
-class RGBmuxer(Component):
+class RGBmuxer(ExplicitComponent):
 
     """
     Take three (m,n) matrices of equal size and combine them into a single
@@ -41,18 +39,19 @@ class RGBmuxer(Component):
 
     def __init__(self):
         super(RGBmuxer, self).__init__()
-        self.add("R", Array(iotype="in"))
-        self.add("G", Array(iotype="in"))
-        self.add("B", Array(iotype="in"))
+        self.add_input("R", val=np.zeros((1, 1)))
+        self.add_input("G", val=np.zeros((1, 1)))
+        self.add_input("B", val=np.zeros((1, 1)))
+        self.add_output("frame_out", val=np.zeros((1, 1, 3)))
 
-        self.add("frame_out", Array(iotype="out"))
+    def compute(self, inputs, outputs):
+        R = inputs['R']
+        G = inputs['G']
+        B = inputs['B']
+        outputs['frame_out'] = cv2.merge([R, G, B])
 
-    def execute(self):
-        m, n = self.R.shape
-        self.frame_out = cv2.merge([self.R, self.G, self.B])
 
-
-class CVwrapped(Component):
+class CVwrapped(ExplicitComponent):
 
     """
     Generic wrapper to take the simpler functions from the cv2 or scipy image
@@ -68,14 +67,15 @@ class CVwrapped(Component):
 
     def __init__(self, func, *args, **kwargs):
         super(CVwrapped, self).__init__()
-        self.add("frame_in", Array(iotype="in"))
-        self.add("frame_out", Array(iotype="out"))
+        self.add_input("frame_in", val=np.zeros((1, 1, 3)))
+        self.add_output("frame_out", val=np.zeros((1, 1, 3)))
         self._func = func
         self._args = args
         self._kwargs = kwargs
 
-    def execute(self):
-        self.frame_out = self._func(self.frame_in, *self._args, **self._kwargs)
+    def compute(self, inputs, outputs):
+        frame_in = inputs['frame_in']
+        outputs['frame_out'] = self._func(frame_in, *self._args, **self._kwargs)
 
 
 class Grayscale(CVwrapped):
@@ -100,36 +100,37 @@ class equalizeContrast(CVwrapped):
         super(equalizeContrast, self).__init__(cv2.equalizeHist)
 
 
-class showBPMtext(Component):
+class showBPMtext(ExplicitComponent):
 
     """
     Shows the estimated BPM in the image frame
     """
-    ready = Bool(False, iotype="in")
-    bpm = Float(iotype="in")
-    x = Int(iotype="in")
-    y = Int(iotype="in")
-    fps = Float(iotype="in")
-    size = Float(iotype="in")
-    n = Int(iotype="in")
+    ready = False
+    bpm = 0.0
+    x = 0
+    y = 0
+    fps = 0.0
+    size = 0.0
+    n = 0
 
     def __init__(self):
         super(showBPMtext, self).__init__()
-        self.add("frame_in", Array(iotype="in"))
-        self.add("frame_out", Array(iotype="out"))
+        self.add_input("frame_in", val=np.zeros((1, 1, 3)))
+        self.add_output("frame_out", val=np.zeros((1, 1, 3)))
         self.bpms = []
 
-    def execute(self):
+    def compute(self, inputs, outputs):
+        frame_in = inputs['frame_in']
         self.bpms.append([time.time(), self.bpm])
         if self.ready:
             col = (0, 255, 0)
-            text = "%0.1f bpm" % self.bpm
+            text = "%0.5f bpm" % self.bpm
             tsize = 2
         else:
             col = (100, 255, 100)
             gap = (self.n - self.size) / self.fps
-            text = "(estimate: %0.1f bpm, wait %0.0f s)" % (self.bpm, gap)
+            text = "(estimate: %0.5f bpm, wait %0.2f s)" % (self.bpm, gap)
             tsize = 1
-        cv2.putText(self.frame_in, text,
+        cv2.putText(frame_in, text,
                     (self.x, self.y), cv2.FONT_HERSHEY_PLAIN, tsize, col)
-        self.frame_out = self.frame_in
+        outputs['frame_out'] = frame_in

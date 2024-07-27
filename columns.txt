@@ -1,0 +1,14 @@
+age
+sex
+cp
+trtbps
+chol
+fbs
+restecg
+thalachh
+exng
+oldpeak
+slp
+caa
+thall
+o2Saturation
